@@ -1,4 +1,5 @@
 from .restaurants import Restaurants
+from ...processor import SyncCallParams
 from ..values import GeoValue, RequestValue, RestaurantValue
 
 
@@ -29,5 +30,5 @@ class GetirRestaurants(Restaurants):
             """,
         )
 
-    def process() -> list[Restaurants]:
+    def process() -> list[RestaurantValue]:
         pass

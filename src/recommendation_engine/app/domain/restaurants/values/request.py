@@ -9,5 +9,6 @@ class RequestValue:
     method: Literal["GET", "POST"] = "POST"
     template_loc: Literal["parameter", "body"] = "body"
 
-    def fill_template(self, **kwargs) -> str:
-        return self.template.format(**kwargs)
+    @classmethod
+    def format_template(cls, template_params: dict):
+        return cls.template.format(**template_params)
