@@ -9,6 +9,8 @@ readme = "README.md"
 python = "^3.11.5"
 pendulum = "^3.0.0"
 requests = "^2.31.0"
+lxml = "^5.2.1"
+tqdm = "^4.66.2"
 
 
 [build-system]
