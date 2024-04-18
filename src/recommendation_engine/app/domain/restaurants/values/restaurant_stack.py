@@ -11,3 +11,9 @@ class RestaurantStack:
 
     def add_restaurant(self, restaurant_value: RestaurantValue):
         self._restaurants.append(restaurant_value)
+
+    def __len__(self) -> int:
+        return len(self._restaurants)
+
+    def clean_restaurants(self):
+        self._restaurants.clear()

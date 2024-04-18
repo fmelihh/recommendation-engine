@@ -30,6 +30,15 @@ class Processor(ABC):
     def process(self) -> T:
         pass
 
+    @staticmethod
+    def _retrieve_json_from_response(response: requests.Response) -> dict | None:
+        try:
+            return response.json()
+        except Exception as e:
+            logger.exception(
+                f"given response object cannot be jsonable. url: {response.url}. error details: {e}"
+            )
+
     @retry(
         stop=stop_after_attempt(5),
         retry=retry_if_exception_type(Exception),

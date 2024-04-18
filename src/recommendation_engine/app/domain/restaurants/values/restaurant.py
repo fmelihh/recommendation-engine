@@ -6,6 +6,7 @@ from .delivery_time import DeliveryTime
 
 @dataclass(frozen=True)
 class RestaurantValue:
+    id: str | None = None
     name: str | None = None
     slug: str | None = None
     image_url: str | None = None
