@@ -27,7 +27,7 @@ class SyncCallParams(BaseModel):
 
 class Processor(ABC):
     @abstractmethod
-    def process() -> T:
+    def process(self) -> T:
         pass
 
     @retry(

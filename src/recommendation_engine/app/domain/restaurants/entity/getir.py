@@ -30,5 +30,5 @@ class GetirRestaurants(Restaurants):
             """,
         )
 
-    def process() -> list[RestaurantValue]:
+    def process(self) -> list[RestaurantValue]:
         pass
