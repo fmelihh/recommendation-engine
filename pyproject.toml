@@ -14,6 +14,7 @@ tqdm = "^4.66.2"
 loguru = "^0.7.2"
 pydantic = "^2.6.4"
 tenacity = "^8.2.3"
+iso4217 = "^1.11.20220401"
 
 
 [build-system]

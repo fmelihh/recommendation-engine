@@ -144,6 +144,17 @@ files = [
 ]
 
 [[package]]
+name = "iso4217"
+version = "1.11.20220401"
+description = "ISO 4217 currency data package for Python"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
+files = [
+    {file = "iso4217-1.11.20220401-py2.py3-none-any.whl", hash = "sha256:28f9c47cc6961c85b87599af7d61df90f707efd936babeb88094c2e1d8d67e82"},
+    {file = "iso4217-1.11.20220401.tar.gz", hash = "sha256:03b5c1493f47c3fb4fb066135d66115340ddab55633b85d0ed39acacab3a090e"},
+]
+
+[[package]]
 name = "loguru"
 version = "0.7.2"
 description = "Python logging made (stupidly) simple"
@@ -677,4 +688,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11.5"
-content-hash = "d49c54199722bb7dd89177cf81e350b0267046c2d21ddd86020404168532420e"
+content-hash = "1efff1ef9e9640c019ea8c94b4a142f370e390863f911f885e7a4bc1aab1e5d2"
