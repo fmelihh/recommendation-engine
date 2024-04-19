@@ -1,0 +1,35 @@
+name: Recommendation Engine CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Checkout code"
+      uses: "actions/checkout@v2"
+
+    - name: "a"
+      uses: "actions/setup-python@v2"
+      with:
+        python-version: 3.x
+
+    - name: "Install poetry"
+      run: |
+        curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+
+    - name: "Activate poetry"
+      run: source $HOME/.poetry/env
+
+    - name: Install dependencies
+      run: poetry install
+
+    - name: Run main.py
+      run: python main.py
