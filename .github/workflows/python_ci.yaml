@@ -39,6 +39,5 @@ jobs:
 
     - name: Run main.py
       run: |
-        poetry run python main.py
-      if: success()
+        timeout 1m poetry run python main.py
 
