@@ -1,0 +1,29 @@
+services:
+  search-project:
+    image: search-project
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: search-project
+    container_name: search-project
+    user: root
+    environment:
+      ENV_FOR_DYNACONF: docker
+    command: "python /opt/search/main.py"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/opt/search
+    depends_on:
+      - "redis"
+  redis:
+    image: redis
+    hostname: redis
+    container_name: redis
+    restart: unless-stopped
+    command: >
+      bash -c "redis-server --appendonly yes "
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis:/data
