@@ -40,3 +40,5 @@ jobs:
     - name: Run main.py
       run: |
         poetry run python main.py
+      if: ${{ success() }}
+
