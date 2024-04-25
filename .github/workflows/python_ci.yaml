@@ -27,7 +27,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        source $HOME/.poetry/env && poetry install
+        poetry install
 
     - name: Run main.py
       run: |
