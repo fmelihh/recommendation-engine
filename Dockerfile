@@ -10,7 +10,7 @@ COPY . /opt/search
 COPY poetry.lock /opt/search/poetry.lock
 COPY pyproject.toml /opt/search/pyproject.toml
 
-WORKDIR /opt/b2m
+WORKDIR /opt/search
 
 RUN apt update && \
     apt-get install -y build-essential python3-pip  && \
