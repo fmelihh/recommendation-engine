@@ -21,9 +21,7 @@ RUN apt update && \
     apt install libaio1 && \
     python -m pip install --upgrade pip && \
     pip install pkginfo virtualenv poetry  && \
-    poetry config cache-dir /opt/b2m/cache && \
-    poetry config http-basic.b2m odin asgard_2021. && \
-    poetry config repositories.b2m_repo http://pip.b2metric.com && poetry config http-basic.b2m_repo odin asgard_2021. && \
+    poetry config cache-dir /opt/search/cache && \
     poetry config virtualenvs.create false
 
 RUN poetry install --no-root --no-dev -vvv

@@ -21,14 +21,18 @@ jobs:
       with:
         python-version: 3.x
 
-    - name: "Install poetry"
+    - name: "Install Poetry"
       run: |
-        curl -sSL https://install.python-poetry.org | python3 -
+        pip install pkginfo virtualenv poetry
+
+#    - name: "Install poetry"
+#      run: |
+#        curl -sSL https://install.python-poetry.org | python3 -
 
     - name: Install dependencies
       run: |
-        poetry install
+        poetry install --no-root --no-dev -vvv
 
     - name: Run main.py
       run: |
-        poetry shell && python main.py
+        python main.py
