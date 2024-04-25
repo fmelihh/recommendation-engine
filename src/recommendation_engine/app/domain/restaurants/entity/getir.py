@@ -72,31 +72,25 @@ class GetirRestaurants(Restaurants):
 
             skip += 10
 
-    def transform_unstructured_data(self, record_value: dict) -> RestaurantValue:
-        try:
-            values = dict()
-            values["id"] = record_value.get("id")
-            values["name"] = record_value.get("name")
-            values["slug"] = record_value.get("slug")
-            values["image_url"] = record_value.get("imageURL")
-            values["rating_point"] = record_value.get("ratingPoint")
-            values["rating_count"] = record_value.get("ratingCount")
-            values["min_basket_size"] = record_value.get("minBasketSize", {}).get(
-                "value"
-            )
-            values["restaurant_min_basket_size"] = record_value.get(
-                "restaurantMinBasketSize", {}
-            ).get("value")
-            values["estimated_delivery_time"] = record_value.get(
-                "estimatedDeliveryDuration", {}
-            )
-            values["delivery_fee"] = record_value.get("deliveryFee")
-            restaurant_value = RestaurantValue(**values)
-            return restaurant_value
-        except ValueError as e:
-            pass
-        except Exception as e:
-            pass
+    @staticmethod
+    def transform_unstructured_data(record_value: dict) -> RestaurantValue:
+        values = dict()
+        values["id"] = record_value.get("id")
+        values["name"] = record_value.get("name")
+        values["slug"] = record_value.get("slug")
+        values["image_url"] = record_value.get("imageURL")
+        values["rating_point"] = record_value.get("ratingPoint")
+        values["rating_count"] = record_value.get("ratingCount")
+        values["min_basket_size"] = record_value.get("minBasketSize", {}).get("value")
+        values["restaurant_min_basket_size"] = record_value.get(
+            "restaurantMinBasketSize", {}
+        ).get("value")
+        values["estimated_delivery_time"] = record_value.get(
+            "estimatedDeliveryDuration", {}
+        )
+        values["delivery_fee"] = record_value.get("deliveryFee")
+        restaurant_value = RestaurantValue(**values)
+        return restaurant_value
 
     def process(self) -> list[RestaurantValue]:
         for restaurant_list in self._iterate_over_restaurants():
