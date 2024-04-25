@@ -37,6 +37,10 @@ jobs:
       run: | 
         poetry config virtualenvs.in-project true
 
+    - name: Poetry shell
+      run: |
+        poetry shell
+
     - name: Run main.py
       run: |
         python main.py
