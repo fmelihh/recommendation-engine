@@ -1,14 +1,14 @@
-import dataclasses
 from pydantic import HttpUrl
 from dataclasses import dataclass
 
 from .price import Price
 from .rating_count import RatingCount
 from .delivery_time import DeliveryTime
+from ...mixins import DataclassValidationMixin
 
 
 @dataclass(frozen=True)
-class RestaurantValue:
+class RestaurantValue(DataclassValidationMixin):
     id: str | None = None
     name: str | None = None
     slug: str | None = None
@@ -103,8 +103,3 @@ class RestaurantValue:
 
         amount = self.delivery_fee.replace("₺", "").replace(",", ".").strip()
         return Price(amount=amount, currency="TL")
-
-    def __post_init__(self):
-        for field in dataclasses.fields(self):
-            if method := getattr(self, f"validate_{field.name}", None):
-                object.__setattr__(self, field.name, method())
