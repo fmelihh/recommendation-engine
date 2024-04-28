@@ -10,15 +10,13 @@ class RequestValue:
     method: Literal["GET", "POST"] = "POST"
     template_loc: Literal["params", "body"] = "body"
 
-    @classmethod
-    def _format_template(cls, template_params: dict) -> dict:
-        return eval(cls.template.format(**template_params))
+    def _format_template(self, template_params: dict) -> dict:
+        return eval(self.template.strip().format(**template_params))
 
-    @classmethod
-    def retrieve_formatted_request(cls, template_params: dict) -> dict:
+    def retrieve_formatted_request(self, template_params: dict) -> dict:
         return {
-            "url": cls.url,
-            "method": cls.method,
-            "headers": cls.headers,
-            cls.template_loc: cls._format_template(template_params),
+            "url": self.url,
+            "method": self.method,
+            "headers": self.headers,
+            self.template_loc: self._format_template(template_params),
         }

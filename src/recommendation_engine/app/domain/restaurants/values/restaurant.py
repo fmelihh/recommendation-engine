@@ -55,41 +55,37 @@ class RestaurantValue:
         count = (
             self.rating_count.replace("(", "").replace(")", "").replace("+", "").strip()
         )
-        return RatingCount(count=count, is_exceed_count=is_exceed_count)
+        return RatingCount(count=int(count), is_exceed_count=is_exceed_count)
 
-    def validate_min_basket_size(self) -> Price:
-        if not isinstance(self.min_basket_size, dict):
+    def validate_min_basket_size(self) -> Price | None:
+        if self.min_basket_size is None:
+            return None
+        if not isinstance(self.min_basket_size, str):
             raise ValueError("invalid min basket size type expected.")
-        if "value" not in self.min_basket_size:
-            raise ValueError("expected object key is not specified.")
+        amount = self.min_basket_size.replace("₺", "").replace(",", ".").strip()
+        amount = float(amount)
+        return Price(amount=amount, currency="TL")
+
+    def validate_restaurant_min_basket_size(self) -> Price | None:
+        if self.restaurant_min_basket_size is None:
+            return None
+
+        if not isinstance(self.restaurant_min_basket_size, str):
+            raise ValueError("invalid restaurant min basket size expected.")
         amount = (
-            self.min_basket_size["value"].replace("₺", "").replace(",", ".").strip()
+            self.restaurant_min_basket_size.replace("₺", "").replace(",", ".").strip()
         )
         amount = float(amount)
         return Price(amount=amount, currency="TL")
 
-    def validate_restaurant_min_basket_size(self) -> Price:
-        if not isinstance(self.restaurant_min_basket_size, dict):
-            raise ValueError("invalid restaurant min basket size type expected.")
-        if "value" not in self.min_basket_size:
-            raise ValueError("expected object key is not specified.")
-        amount = (
-            self.restaurant_min_basket_size["value"]
-            .replace("₺", "")
-            .replace(",", ".")
-            .strip()
-        )
-        amount = float(amount)
-        return Price(amount=amount, currency="TL")
-
-    def validate_estimated_delivery_time(self) -> DeliveryTime:
+    def validate_estimated_delivery_time(self) -> DeliveryTime | None:
         if not isinstance(self.estimated_delivery_time, dict):
             raise ValueError("invalid estimated delivery time type expected.")
         if (
             "value" not in self.estimated_delivery_time
             and "suffix" not in self.estimated_delivery_time
         ):
-            raise ValueError("expected object key is not specified.")
+            return None
 
         unit = self.estimated_delivery_time["suffix"].strip()
         le, ge = self.estimated_delivery_time["value"].split("-")
@@ -98,7 +94,10 @@ class RestaurantValue:
         ge = int(ge.strip())
         return DeliveryTime(le=le, ge=ge, unit=unit)
 
-    def validate_delivery_fee(self) -> Price:
+    def validate_delivery_fee(self) -> Price | None:
+        if self.delivery_fee is None:
+            return None
+
         if not isinstance(self.delivery_fee, str):
             raise ValueError("invalid delivery fee type expected.")
 
@@ -108,4 +107,4 @@ class RestaurantValue:
     def __post_init__(self):
         for field in dataclasses.fields(self):
             if method := getattr(self, f"validate_{field.name}", None):
-                setattr(self, field.name, method())
+                object.__setattr__(self, field.name, method())

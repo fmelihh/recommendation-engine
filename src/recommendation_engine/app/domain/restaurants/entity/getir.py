@@ -1,11 +1,13 @@
 from loguru import logger
 from typing import Generator
-from .restaurants import Restaurants
+
+from ...entity import BaseEntity
+from ...processor import Processor
 from ...processor import SyncCallParams
 from ..values import GeoValue, RequestValue, RestaurantValue, RestaurantStack
 
 
-class GetirRestaurants(Restaurants):
+class GetirRestaurants(BaseEntity, Processor):
     HEADERS = {
         "authority": "food-client-api-gateway.getirapi.com",
         "accept": "*/*",
@@ -25,20 +27,22 @@ class GetirRestaurants(Restaurants):
             template_loc="body",
             headers=self.HEADERS,
             template="""
-                "filters": [
-                    {
-                        "filter": "sort",
-                        "value": [
-                            "2"
-                        ]
-                    }
-                ],
-                "location": {
-                    "lat": {lat},
-                    "lon": {lon}
-                },
-                "skip": {skip},
-                "limit": 10
+                {{
+                    "filters": [
+                        {{
+                            "filter": "sort",
+                            "value": [
+                                "2"
+                            ]
+                        }}
+                    ],
+                    "location": {{
+                        "lat": {lat},
+                        "lon": {lon}
+                    }},
+                    "skip": {skip},
+                    "limit": 10
+                }}
             """,
         )
         self.restaurant_stack = RestaurantStack()
@@ -48,7 +52,7 @@ class GetirRestaurants(Restaurants):
         while 1:
             request_template = (
                 self.filter_and_search_payload.retrieve_formatted_request(
-                    {"skip": skip}
+                    {"skip": skip, "lat": self.geo_value.lat, "lon": self.geo_value.lon}
                 )
             )
             sync_call_params = SyncCallParams(**request_template)

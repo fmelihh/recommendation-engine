@@ -1,3 +1,5 @@
+import json
+
 import requests
 from tenacity import (
     retry,
@@ -7,6 +9,7 @@ from tenacity import (
 )
 from loguru import logger
 from abc import ABC, abstractmethod
+from pydantic import field_validator
 from typing import TypeVar, List, Literal
 from pydantic import BaseModel, Field, AnyUrl
 
@@ -19,10 +22,17 @@ T = TypeVar("T", *[RestaurantValue, List[RestaurantValue]])
 
 class SyncCallParams(BaseModel):
     url: AnyUrl
-    body: dict | None = Field(default=None)
+    body: dict | str | None = Field(default=None)
     params: dict | None = Field(default=None)
     headers: dict | None = Field(default=None)
     method: Literal["GET", "POST"] = Field(default="POST")
+
+    @field_validator("body")
+    @classmethod
+    def validate_body(cls, v: dict | str | None) -> dict | str | None:
+        if isinstance(v, dict):
+            v = json.dumps(v)
+        return v
 
 
 class Processor(ABC):
@@ -44,7 +54,7 @@ class Processor(ABC):
         retry=retry_if_exception_type(Exception),
         wait=wait_exponential(multiplier=1, min=30, max=120),
     )
-    def synchronized_call(self, sync_call_params: SyncCallParams) -> dict:
+    def synchronized_call(self, sync_call_params: SyncCallParams) -> requests.Response:
         try:
             response = requests.request(
                 url=sync_call_params.url,
@@ -54,7 +64,9 @@ class Processor(ABC):
                 headers=sync_call_params.headers,
             )
             response.raise_for_status()
-            data = response.json()
-            return data
+            logger.info(
+                f"Sync call method was successfully completed. Requested url is: {sync_call_params.url}"
+            )
+            return response
         except Exception as e:
             logger.exception(str(e))

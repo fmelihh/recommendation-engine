@@ -18,6 +18,8 @@ fastapi = "^0.110.2"
 uvicorn = "^0.29.0"
 confluent-kafka = "^2.3.0"
 celery = "^5.4.0"
+coverage = "^7.5.0"
+pytest = "^8.2.0"
 
 
 [build-system]
