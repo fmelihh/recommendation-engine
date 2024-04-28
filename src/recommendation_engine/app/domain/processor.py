@@ -37,7 +37,7 @@ class SyncCallParams(BaseModel):
 
 class Processor(ABC):
     @abstractmethod
-    def process(self) -> T:
+    def process(self, process_limit: int | None = None) -> T:
         pass
 
     @staticmethod

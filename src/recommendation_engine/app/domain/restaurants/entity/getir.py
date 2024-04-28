@@ -96,10 +96,16 @@ class GetirRestaurants(BaseEntity, Processor):
         restaurant_value = RestaurantValue(**values)
         return restaurant_value
 
-    def process(self) -> list[RestaurantValue]:
+    def process(self, process_limit: int | None = None) -> list[RestaurantValue]:
         for restaurant_list in self._iterate_over_restaurants():
             for restaurant in restaurant_list:
                 restaurant = self.transform_unstructured_data(restaurant)
                 self.restaurant_stack.add_restaurant(restaurant)
+
+            if (
+                process_limit is not None
+                and len(self.restaurant_stack) >= process_limit
+            ):
+                break
 
         return self.restaurant_stack.retrieve_restaurants()
