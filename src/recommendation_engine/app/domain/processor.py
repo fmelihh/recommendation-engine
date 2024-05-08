@@ -13,11 +13,12 @@ from pydantic import field_validator
 from typing import TypeVar, List, Literal
 from pydantic import BaseModel, Field, AnyUrl
 
+from .menu.values import MenuValue
 from .comments.values import CommentValue
 from .restaurants.values import RestaurantValue
 
 
-T = TypeVar("T", *[List[RestaurantValue], List[CommentValue]])
+T = TypeVar("T", *[List[RestaurantValue], List[CommentValue], List[MenuValue]])
 
 
 class SyncCallParams(BaseModel):

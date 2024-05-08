@@ -1,10 +1,8 @@
-import json
-import lxml.etree
 from loguru import logger
 
 from ...entity import BaseEntity
-from ..values import RequestValue, MenuValue
 from ...processor import Processor, SyncCallParams
+from ..values import RequestValue, MenuValue, MenuStack
 
 
 class GetirMenu(BaseEntity, Processor):
@@ -33,6 +31,7 @@ class GetirMenu(BaseEntity, Processor):
             method="GET",
             headers=self.HEADERS,
         )
+        self.menu_stack = MenuStack()
 
     def _retrieve_menu_from_api(self) -> list[dict] | None:
         request_template = self.filter_and_search_payload.retrieve_formatted_request(
@@ -52,7 +51,30 @@ class GetirMenu(BaseEntity, Processor):
         logger.info(f"Menu with {self.restaurant_slug} was crawled.")
         return menu_list
 
+    @staticmethod
+    def _transform_unstructured_data(category: str, menu_value: dict) -> MenuValue:
+        values = dict()
+        values["category"] = category
+        values["product_id"] = menu_value["id"]
+        values["name"] = menu_value["name"]
+        values["price"] = menu_value["priceText"]
+        values["description"] = menu_value["description"]
+        values["image_url"] = menu_value["imageURL"]
+        values["full_screen_image_url"] = menu_value["fullScreenImageURL"]
+        values["is_available"] = menu_value["isAvailable"]
+        menu_value = MenuValue(**values)
+        return menu_value
 
     def process(self, process_limit: int | None = None) -> list[MenuValue]:
         menu_list = self._retrieve_menu_from_api()
-        return []
+        for entity in menu_list:
+            category = entity["name"]
+            category_menu_list = entity["products"]
+            for category_menu in category_menu_list:
+                menu = self._transform_unstructured_data(category, category_menu)
+                self.menu_stack.add_menu(menu)
+
+            if process_limit is not None and len(self.menu_stack) >= process_limit:
+                break
+
+        return self.menu_stack.retrieve_menu_list()
