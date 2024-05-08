@@ -5,7 +5,7 @@ from ...mixins import DataclassValidationMixin
 
 
 @dataclass(frozen=True)
-class Menu(DataclassValidationMixin):
+class MenuValue(DataclassValidationMixin):
     category: str
     product_id: str
     name: str
