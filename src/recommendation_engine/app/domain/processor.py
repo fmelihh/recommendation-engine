@@ -13,11 +13,11 @@ from pydantic import field_validator
 from typing import TypeVar, List, Literal
 from pydantic import BaseModel, Field, AnyUrl
 
-
+from .comments.values import CommentValue
 from .restaurants.values import RestaurantValue
 
 
-T = TypeVar("T", *[RestaurantValue, List[RestaurantValue]])
+T = TypeVar("T", *[List[RestaurantValue], List[CommentValue]])
 
 
 class SyncCallParams(BaseModel):
@@ -57,7 +57,7 @@ class Processor(ABC):
     def synchronized_call(self, sync_call_params: SyncCallParams) -> requests.Response:
         try:
             response = requests.request(
-                url=sync_call_params.url,
+                url=str(sync_call_params.url),
                 data=sync_call_params.body,
                 params=sync_call_params.params,
                 method=sync_call_params.method,
