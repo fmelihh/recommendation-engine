@@ -54,7 +54,7 @@ class GetirComments(BaseEntity, Processor):
 
             yield comments
             logger.info(
-                f"page {skip} was crawled. total crawled data is {len(self.restaurant_stack)}"
+                f"page {skip} was crawled. total crawled data is {len(self.comment_stack)}"
             )
 
             skip += 10
@@ -67,6 +67,7 @@ class GetirComments(BaseEntity, Processor):
         values["restaurant_reply"] = record_value.get("restaurantReply")
         values["restaurant_rating"] = record_value.get("restaurantRating")
         values["restaurant_comment"] = record_value.get("restaurantComment")
+        values["chips_rating"] = record_value.get("chipsRating")
 
         comment_value = CommentValue(**values)
         return comment_value
