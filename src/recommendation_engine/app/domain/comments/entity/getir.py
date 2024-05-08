@@ -19,8 +19,9 @@ class GetirComments(BaseEntity, Processor):
 
     def __init__(self, restaurant_id: str):
         super().__init__()
+        self.restaurant_id = restaurant_id
         self.filter_and_search_payload = RequestValue(
-            url=f"https://food-client-api-gateway.getirapi.com/restaurants/{restaurant_id}/reviews",
+            url=f"https://food-client-api-gateway.getirapi.com/restaurants/{self.restaurant_id}/reviews",
             method="GET",
             template_loc="params",
             headers=self.HEADERS,
