@@ -1,10 +1,13 @@
 from loguru import logger
 from typing import Generator
 
+from ..values import GeoValue
 from ...entity import BaseEntity
 from ...processor import Processor
+from ...request import RequestValue
 from ...processor import SyncCallParams
-from ..values import GeoValue, RequestValue, RestaurantValue, RestaurantStack
+from ...value_stack import EntityValueStack
+from ..values.getir import GetirRestaurantValue
 
 
 class GetirRestaurants(BaseEntity, Processor):
@@ -45,7 +48,7 @@ class GetirRestaurants(BaseEntity, Processor):
                 }}
             """,
         )
-        self.restaurant_stack = RestaurantStack()
+        self.restaurant_stack = EntityValueStack()
 
     def _iterate_over_restaurants(self) -> Generator[dict, None, None]:
         skip = 0
@@ -77,7 +80,7 @@ class GetirRestaurants(BaseEntity, Processor):
             skip += 10
 
     @staticmethod
-    def transform_unstructured_data(record_value: dict) -> RestaurantValue:
+    def transform_unstructured_data(record_value: dict) -> GetirRestaurantValue:
         values = dict()
         values["id"] = record_value.get("id")
         values["name"] = record_value.get("name")
@@ -93,14 +96,14 @@ class GetirRestaurants(BaseEntity, Processor):
             "estimatedDeliveryDuration", {}
         )
         values["delivery_fee"] = record_value.get("deliveryFee")
-        restaurant_value = RestaurantValue(**values)
+        restaurant_value = GetirRestaurantValue(**values)
         return restaurant_value
 
-    def process(self, process_limit: int | None = None) -> list[RestaurantValue]:
+    def process(self, process_limit: int | None = None) -> list[GetirRestaurantValue]:
         for restaurant_list in self._iterate_over_restaurants():
             for restaurant in restaurant_list:
                 restaurant = self.transform_unstructured_data(restaurant)
-                self.restaurant_stack.add_restaurant(restaurant)
+                self.restaurant_stack.add_value(restaurant)
 
             if (
                 process_limit is not None
@@ -108,4 +111,4 @@ class GetirRestaurants(BaseEntity, Processor):
             ):
                 break
 
-        return self.restaurant_stack.retrieve_restaurants()
+        return self.restaurant_stack.retrieve_values()
