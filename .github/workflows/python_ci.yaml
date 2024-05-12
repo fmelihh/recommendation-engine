@@ -43,8 +43,8 @@ jobs:
 
     - name: Run tests and coverage report
       run: | 
-        coverage run --data-file .coverage -m pytest -s 
-        coverage json
+        poetry run coverage run --data-file .coverage -m pytest -s 
+        poetry run coverage json
 
     - name: Set total coverage to COVERAGE_REPORT environment variable
       run: | 
