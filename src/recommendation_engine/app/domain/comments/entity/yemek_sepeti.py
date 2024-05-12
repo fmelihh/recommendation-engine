@@ -63,8 +63,8 @@ class YemekSepeti(BaseEntity, Processor):
             if not data:
                 break
 
-            next_page_key = data.get("pageKey")
             comments = data.get("data")
+            next_page_key = data.get("pageKey", "")
 
             if not comments:
                 break
