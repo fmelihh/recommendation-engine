@@ -41,3 +41,17 @@ jobs:
       run: |
         timeout 20s poetry run python main.py || true
 
+    - name: Run tests and coverage report
+      run: | 
+        coverage run --data-file .coverage -m pytest -s 
+        coverage json
+
+    - name: Set total coverage to COVERAGE_REPORT environment variable
+      run: | 
+        export COVERAGE_REPORT=$(python -c "import json;print(json.load(open('coverage.json'))['totals']['percent_covered'])") 
+        echo "##TOTAL COVERAGE: ${COVERAGE_REPORT}"
+
+    - name: Check TOTAL_COVERAGE greater than 60
+      if: TOTAL_COVERAGE > 100
+      run:
+        echo "Total coverage greater than %60"
