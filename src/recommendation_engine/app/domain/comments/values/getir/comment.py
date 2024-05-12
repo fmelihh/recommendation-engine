@@ -12,12 +12,12 @@ class GetirCommentValue(CommentValue):
     chips_rating: list[str] | None
 
     def validate_review_id(self) -> str:
-        if not isinstance(self.review_id, str):
+        if self.review_id and not isinstance(self.review_id, str):
             raise ValueError("Invalid id type expected.")
         return self.review_id
 
     def validate_date_text(self) -> str:
-        if not isinstance(self.date_text, str):
+        if self.date_text and not isinstance(self.date_text, str):
             raise ValueError("Invalid comment date text type expected.")
         return self.date_text
 
