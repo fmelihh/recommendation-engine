@@ -50,7 +50,7 @@ jobs:
       run: | 
         export COVERAGE_REPORT=$(python -c "import json;print(json.load(open('coverage.json'))['totals']['percent_covered'])") 
         echo "##TOTAL COVERAGE: ${COVERAGE_REPORT}"
-        COVERAGE_RESULT=$(echo "$COVERAGE_REPORT < 110" | bc)
+        COVERAGE_RESULT=$(echo "$COVERAGE_REPORT < 60" | bc)
         if [ "$COVERAGE_RESULT" -eq 1 ]; then
           echo "Coverage less than 60%. Exiting..."
           exit 1
