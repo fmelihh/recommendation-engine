@@ -1,8 +1,10 @@
 from loguru import logger
 
 from ...entity import BaseEntity
+from ...request import RequestValue
+from ..values.getir import GetirMenuValue
+from ...value_stack import EntityValueStack
 from ...processor import Processor, SyncCallParams
-from ..values import RequestValue, MenuValue, MenuStack
 
 
 class GetirMenu(BaseEntity, Processor):
@@ -31,7 +33,7 @@ class GetirMenu(BaseEntity, Processor):
             method="GET",
             headers=self.HEADERS,
         )
-        self.menu_stack = MenuStack()
+        self.menu_stack = EntityValueStack()
 
     def _retrieve_menu_from_api(self) -> list[dict] | None:
         request_template = self.filter_and_search_payload.retrieve_formatted_request(
@@ -52,7 +54,7 @@ class GetirMenu(BaseEntity, Processor):
         return menu_list
 
     @staticmethod
-    def _transform_unstructured_data(category: str, menu_value: dict) -> MenuValue:
+    def _transform_unstructured_data(category: str, menu_value: dict) -> GetirMenuValue:
         values = dict()
         values["category"] = category
         values["product_id"] = menu_value["id"]
@@ -62,19 +64,19 @@ class GetirMenu(BaseEntity, Processor):
         values["image_url"] = menu_value["imageURL"]
         values["full_screen_image_url"] = menu_value["fullScreenImageURL"]
         values["is_available"] = menu_value["isAvailable"]
-        menu_value = MenuValue(**values)
+        menu_value = GetirMenuValue(**values)
         return menu_value
 
-    def process(self, process_limit: int | None = None) -> list[MenuValue]:
+    def process(self, process_limit: int | None = None) -> list[GetirMenuValue]:
         menu_list = self._retrieve_menu_from_api()
         for entity in menu_list:
             category = entity["name"]
             category_menu_list = entity["products"]
             for category_menu in category_menu_list:
                 menu = self._transform_unstructured_data(category, category_menu)
-                self.menu_stack.add_menu(menu)
+                self.menu_stack.add_value(menu)
 
             if process_limit is not None and len(self.menu_stack) >= process_limit:
                 break
 
-        return self.menu_stack.retrieve_menu_list()
+        return self.menu_stack.retrieve_values()

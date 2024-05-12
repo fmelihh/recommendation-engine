@@ -9,7 +9,8 @@ Z = TypeVar("Z", RestaurantValue, CommentValue, MenuValue)
 
 
 class EntityValueStack:
-    _values = []
+    def __init__(self):
+        self._values = []
 
     def retrieve_values(self) -> list[Z]:
         return self._values
