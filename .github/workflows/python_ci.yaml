@@ -39,7 +39,7 @@ jobs:
 
     - name: Run main.py
       run: |
-        timeout 20s poetry run python main.py || true
+        timeout 5s poetry run python main.py || true
 
     - name: Run tests and coverage report
       run: | 
@@ -53,7 +53,7 @@ jobs:
 
     - name: Check coverage threshold
       run: |
-        if (( $(echo "$COVERAGE_REPORT < 60" | bc -1) )); then
+        if (( $(echo "$COVERAGE_REPORT < 110" | bc) )); then
           echo "Coverage less than 60%. Exiting..."
           exit 1
         fi
