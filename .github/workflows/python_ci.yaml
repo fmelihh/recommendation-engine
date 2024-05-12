@@ -53,7 +53,7 @@ jobs:
 
     - name: Check coverage threshold
       run: |
-        if (( $(echo "$COVERAGE_REPORT < 110" | bc -l) )); then
+        if (( "$(echo "$COVERAGE_REPORT < 110" | bc)" -eq "$1" )); then
           echo "Coverage less than 60%. Exiting..."
           exit 1
         fi
