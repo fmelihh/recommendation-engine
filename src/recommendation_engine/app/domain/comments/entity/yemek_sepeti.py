@@ -2,8 +2,10 @@ from loguru import logger
 from typing import Generator
 
 from ...entity import BaseEntity
+from ...request import RequestValue
+from ...value_stack import EntityValueStack
 from ...processor import Processor, SyncCallParams
-from ..values import CommentValue, RequestValue, CommentStack
+from ..values.yemeksepeti import YemeksepetiCommentValue
 
 
 class YemekSepeti(BaseEntity, Processor):
@@ -40,11 +42,45 @@ class YemekSepeti(BaseEntity, Processor):
                             "limit": 30,
                             "created_at": "desc"
                             "has_dish": True
-                            "nextPageKey": {page_key}                            
+                            "nextPageKey": {next_page_key}                            
                         }}
                     """,
         )
-        self.comment_stack = CommentStack()
+        self.comment_stack = EntityValueStack()
 
-    def process(self, process_limit: int | None = None) -> list[CommentValue]:
+    def _iterate_over_comments(self) -> Generator[dict, None, None]:
+        next_page_key = None
+        while True:
+            request_template = (
+                self.filter_and_search_payload.retrieve_formatted_request(
+                    {"next_page_key": next_page_key}
+                )
+            )
+            sync_call_params = SyncCallParams(**request_template)
+            response = self.synchronized_call(sync_call_params)
+            data = self._retrieve_json_from_response(response)
+
+            if not data:
+                break
+
+            next_page_key = data.get("pageKey")
+            comments = data.get("data")
+
+            if not comments:
+                break
+
+            yield comments
+            logger.info(
+                f"Page was crawled. total crawled data is {len(self.comment_stack)}"
+            )
+            if not next_page_key:
+                break
+
+    @staticmethod
+    def transform_unstructured_data(record_value: dict) -> YemeksepetiCommentValue:
+        pass
+
+    def process(
+        self, process_limit: int | None = None
+    ) -> list[YemeksepetiCommentValue]:
         pass

@@ -2,8 +2,10 @@ from loguru import logger
 from typing import Generator
 
 from ...entity import BaseEntity
+from ...request import RequestValue
+from ...value_stack import EntityValueStack
+from ..values.getir import GetirCommentValue
 from ...processor import Processor, SyncCallParams
-from ..values import CommentValue, RequestValue, CommentStack
 
 
 class GetirComments(BaseEntity, Processor):
@@ -31,7 +33,7 @@ class GetirComments(BaseEntity, Processor):
                 }}
             """,
         )
-        self.comment_stack = CommentStack()
+        self.comment_stack = EntityValueStack()
 
     def _iterate_over_comments(self) -> Generator[dict, None, None]:
         skip = 0
@@ -60,26 +62,33 @@ class GetirComments(BaseEntity, Processor):
 
             skip += 10
 
+    review_id: str
+    date_text: str
+    restaurant_rating: int
+    restaurant_comment: str
+    restaurant_reply: str | None
+    chips_rating: list[str] | None
+
     @staticmethod
-    def transform_unstructured_data(record_value: dict) -> CommentValue:
+    def transform_unstructured_data(record_value: dict) -> GetirCommentValue:
         values = dict()
-        values["review_id"] = record_value.get("id")
-        values["date_text"] = record_value.get("dateText")
-        values["restaurant_reply"] = record_value.get("restaurantReply")
+        values["review_id"] = record_value.get("uuid")
+        values["date_text"] = record_value.get("createdAt")
+        values["restaurant_reply"] = record_value.get("text")
         values["restaurant_rating"] = record_value.get("restaurantRating")
         values["restaurant_comment"] = record_value.get("restaurantComment")
         values["chips_rating"] = record_value.get("chipsRating")
 
-        comment_value = CommentValue(**values)
+        comment_value = GetirCommentValue(**values)
         return comment_value
 
-    def process(self, process_limit: int | None = None) -> list[CommentValue]:
+    def process(self, process_limit: int | None = None) -> list[GetirCommentValue]:
         for comment_list in self._iterate_over_comments():
             for comment in comment_list:
                 comment = self.transform_unstructured_data(comment)
-                self.comment_stack.add_comment(comment)
+                self.comment_stack.add_value(comment)
 
             if process_limit is not None and len(self.comment_stack) >= process_limit:
                 break
 
-        return self.comment_stack.retrieve_comments()
+        return self.comment_stack.retrieve_values()
