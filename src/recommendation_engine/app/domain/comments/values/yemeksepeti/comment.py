@@ -30,7 +30,7 @@ class YemeksepetiCommentValue(CommentValue):
         if not isinstance(self.created_at, str):
             raise ValueError("Invalid created_at type expected.")
 
-        pendulum_date = pendulum.from_format(self.created_at, "YYYY-MM-DDTHH:mm:ss")
+        pendulum_date = pendulum.from_format(self.created_at.replace("Z", ""), "YYYY-MM-DDTHH:mm:ss")
         return datetime.datetime(
             year=pendulum_date.year,
             month=pendulum_date.month,
@@ -44,7 +44,7 @@ class YemeksepetiCommentValue(CommentValue):
         if not isinstance(self.updated_at, str):
             raise ValueError("Invalid created_at type expected.")
 
-        pendulum_date = pendulum.from_format(self.updated_at, "YYYY-MM-DDTHH:mm:ss")
+        pendulum_date = pendulum.from_format(self.updated_at.replace("Z", ""), "YYYY-MM-DDTHH:mm:ss")
         return datetime.datetime(
             year=pendulum_date.year,
             month=pendulum_date.month,
@@ -122,10 +122,10 @@ class YemeksepetiCommentValue(CommentValue):
         replies_list = []
         for reply in self.replies:
             created_at = pendulum.from_format(
-                reply["created_at"], "YYYY-MM-DDTHH:mm:ss"
+                reply["createdAt"].replace("Z", ""), "YYYY-MM-DDTHH:mm:ss"
             )
             updated_at = pendulum.from_format(
-                reply["updated_at"], "YYYY-MM-DDTHH:mm:ss"
+                reply["updatedAt"].replace("Z", ""), "YYYY-MM-DDTHH:mm:ss"
             )
             created_at = datetime.datetime(
                 year=created_at.year,

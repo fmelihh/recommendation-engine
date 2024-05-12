@@ -8,7 +8,7 @@ from ...processor import Processor, SyncCallParams
 from ..values.yemeksepeti import YemeksepetiCommentValue
 
 
-class YemekSepeti(BaseEntity, Processor):
+class YemekSepetiComments(BaseEntity, Processor):
     HEADERS = {
         "accept": "application/json, text/plain, */*",
         "accept-language": "en-US,en;q=0.9",
@@ -40,16 +40,16 @@ class YemekSepeti(BaseEntity, Processor):
                         {{
                             "global_entity_id": "YS_TR",
                             "limit": 30,
-                            "created_at": "desc"
-                            "has_dish": True
-                            "nextPageKey": {next_page_key}                            
+                            "created_at": "desc",
+                            "has_dish": True,
+                            "nextPageKey": "{next_page_key}"                            
                         }}
                     """,
         )
         self.comment_stack = EntityValueStack()
 
     def _iterate_over_comments(self) -> Generator[dict, None, None]:
-        next_page_key = None
+        next_page_key = ""
         while True:
             request_template = (
                 self.filter_and_search_payload.retrieve_formatted_request(
@@ -96,4 +96,12 @@ class YemekSepeti(BaseEntity, Processor):
     def process(
         self, process_limit: int | None = None
     ) -> list[YemeksepetiCommentValue]:
-        pass
+        for comment_list in self._iterate_over_comments():
+            for comment in comment_list:
+                comment = self.transform_unstructured_data(comment)
+                self.comment_stack.add_value(comment)
+
+            if process_limit is not None and len(self.comment_stack) >= process_limit:
+                break
+
+        return self.comment_stack.retrieve_values()
