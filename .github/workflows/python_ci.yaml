@@ -51,7 +51,9 @@ jobs:
         export COVERAGE_REPORT=$(python -c "import json;print(json.load(open('coverage.json'))['totals']['percent_covered'])") 
         echo "##TOTAL COVERAGE: ${COVERAGE_REPORT}"
 
-    - name: Check TOTAL_COVERAGE greater than 60
-      if: TOTAL_COVERAGE > 100
-      run:
-        echo "Total coverage greater than %60"
+    - name: Check coverage threshold
+      run: |
+        if (($echo "$COVERAGE_REPORT < 60" | bc)); then
+          echo "Coverage less than 60%. Exiting..."
+          exit 1
+        fi
