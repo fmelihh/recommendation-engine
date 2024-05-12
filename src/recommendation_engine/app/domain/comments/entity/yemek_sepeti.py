@@ -78,7 +78,20 @@ class YemekSepeti(BaseEntity, Processor):
 
     @staticmethod
     def transform_unstructured_data(record_value: dict) -> YemeksepetiCommentValue:
-        pass
+        values = dict()
+        values["comment_id"] = record_value.get("uuid")
+        values["created_at"] = record_value.get("createdAt")
+        values["updated_at"] = record_value.get("updatedAt")
+        values["comment"] = record_value.get("text")
+        values["reviewer_name"] = record_value.get("reviewerName")
+        values["reviewer_id"] = record_value.get("reviewerId")
+        values["rating"] = record_value.get("ratings")
+        values["comment_like_count"] = record_value.get("likeCount")
+        values["product_variation"] = record_value.get("productVariations")
+        values["replies"] = record_value.get("replies")
+
+        comment_value = YemeksepetiCommentValue(**values)
+        return comment_value
 
     def process(
         self, process_limit: int | None = None

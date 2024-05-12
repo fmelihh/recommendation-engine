@@ -10,13 +10,13 @@ from .product_variation import ProductVariation
 
 @dataclass(frozen=True)
 class YemeksepetiCommentValue(CommentValue):
-    comment_id: str
-    created_at: datetime.datetime
-    updated_at: datetime.datetime
-    comment: str
-    reviewer_name: str
-    reviewer_id: str
+    comment_id: str | None
+    created_at: datetime.datetime | str | None
+    updated_at: datetime.datetime | str | None
+    comment: str | None
+    reviewer_name: str | None
+    reviewer_id: str | None
     rating: YemekSepetiRating | list[dict] | None
-    comment_like_count: int
-    product_variation: list[ProductVariation] | None
-    replies: list[YemeksepetiReplies] | None
+    comment_like_count: int | None
+    product_variation: list[ProductVariation] | list[dict] | None
+    replies: list[YemeksepetiReplies] | list[dict] | None
