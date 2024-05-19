@@ -21,37 +21,86 @@ class YemeksepetiRestaurantValue(RestaurantValue):
     loyalty_percentage_amount: float | None
 
     def validate_name(self) -> str:
-        pass
+        if not isinstance(self.name, str):
+            raise ValueError("invalid name type expected.")
+
+        return self.name
 
     def validate_rating(self) -> int | None:
-        pass
+        if self.rating and not isinstance(self.rating, int):
+            raise ValueError("invalid rating type expected.")
+        return self.rating
 
     def validate_url_slug(self) -> str:
-        pass
+        if not isinstance(self.url_slug, str):
+            raise ValueError("invalid url_slug type expected.")
+        return self.url_slug
 
     def validate_restaurant_id(self) -> str:
-        pass
+        if not isinstance(self.restaurant_id, str):
+            raise ValueError("invalid restaurant_id type expected.")
+        return self.restaurant_id
 
     def validate_review_number(self) -> int | None:
-        pass
+        if self.review_number and not isinstance(self.review_number, int):
+            raise ValueError("invalid review_number type expected.")
+        return self.review_number
 
     def validate_coordinates(self) -> GeoValue | None:
-        pass
+        if (
+            not isinstance(self.coordinates, dict)
+            or "lat" not in self.coordinates
+            or "lon" not in self.coordinates
+            or not isinstance(self.coordinates["lat"], float)
+            or not isinstance(self.coordinates["lon"], float)
+        ):
+            raise ValueError("invalid coordinates type expected.")
+        return GeoValue(lat=self.coordinates["lat"], lon=self.coordinates["lon"])
 
     def validate_minimum_pickup_time(self) -> float | None:
-        pass
+        if self.minimum_pickup_time and not isinstance(
+            self.minimum_pickup_time, (int, float)
+        ):
+            raise ValueError("invalid minimum_pickup_time type expected.")
+
+        return float(self.minimum_pickup_time)
 
     def validate_minimum_order_amount(self) -> Price | None:
-        pass
+        if self.minimum_order_amount and not isinstance(
+            self.minimum_order_amount, (float, int)
+        ):
+            raise ValueError("invalid minimum_order_amount type expected.")
+
+        return Price(amount=float(self.minimum_order_amount), currency="TL")
 
     def validate_minimum_delivery_fee(self) -> Price | None:
-        pass
+        if self.minimum_delivery_fee and not isinstance(
+            self.minimum_delivery_fee, (float, int)
+        ):
+            raise ValueError("invalid minimum_delivery_fee type expected.")
+
+        return Price(amount=float(self.minimum_delivery_fee), currency="TL")
 
     def validate_minimum_delivery_time(self) -> float | None:
-        pass
+        if self.minimum_delivery_time and not isinstance(
+            self.minimum_delivery_time, (float, int)
+        ):
+            raise ValueError("invalid minimum_delivery_time type expected.")
+
+        return float(self.minimum_delivery_time)
 
     def validate_original_delivery_fee(self) -> Price | None:
-        pass
+        if self.original_delivery_fee and not isinstance(
+            self.original_delivery_fee, (float, int)
+        ):
+            raise ValueError("invalid original_delivery_fee type expected.")
+
+        return Price(amount=float(self.original_delivery_fee), currency="TL")
 
     def validate_loyalty_percentage_amount(self) -> float | None:
-        pass
+        if self.loyalty_percentage_amount and not isinstance(
+            self.loyalty_percentage_amount, (float, int)
+        ):
+            raise ValueError("invalid loyalty_percentage_amount type expected.")
+
+        return float(self.loyalty_percentage_amount)
