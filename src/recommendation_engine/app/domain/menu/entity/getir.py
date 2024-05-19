@@ -43,6 +43,9 @@ class GetirMenu(BaseEntity, Processor):
         response = self.synchronized_call(sync_call_params)
         data = self._retrieve_json_from_response(response)
 
+        if not data:
+            return None
+
         menu_list = (
             data.get("pageProps", {})
             .get("initialState", {})
