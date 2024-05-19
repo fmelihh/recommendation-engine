@@ -145,7 +145,27 @@ class YemeksepetiRestaurants(BaseEntity, Processor):
 
     @staticmethod
     def transform_unstructured_data(record_value: dict) -> YemeksepetiRestaurantValue:
-        pass
+        values = dict()
+        values["name"] = record_value.get("name")
+        values["rating"] = record_value.get("rating")
+        values["url_slug"] = record_value.get("url_key")
+        values["restaurant_id"] = record_value.get("id")
+        values["review_number"] = record_value.get("review_number")
+        values["coordinates"] = {
+            "lat": record_value.get("latitude"),
+            "lon": record_value.get("longitude"),
+        }
+        values["minimum_pickup_time"] = record_value.get("minimum_pickup_time")
+        values["minimum_order_amount"] = record_value.get("minimum_order_amount")
+        values["minimum_delivery_fee"] = record_value.get("minimum_delivery_fee")
+        values["minimum_delivery_time"] = record_value.get("minimum_delivery_time")
+        values["original_delivery_fee"] = record_value.get("original_delivery_fee")
+        values["loyalty_percentage_amount"] = record_value.get(
+            "loyalty_percentage_amount"
+        )
+
+        restaurant_value = YemeksepetiRestaurantValue(**values)
+        return restaurant_value
 
     def process(
         self, process_limit: int | None = None
