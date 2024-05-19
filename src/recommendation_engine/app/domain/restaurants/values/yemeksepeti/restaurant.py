@@ -8,9 +8,9 @@ from ..restaurant import RestaurantValue
 @dataclass(frozen=True)
 class YemeksepetiRestaurantValue(RestaurantValue):
     name: str
-    rating: int | None
+    rating: float | int | None
     url_slug: str
-    restaurant_id: str
+    restaurant_id: str | int | float
     review_number: int | None
     coordinates: GeoValue | dict | None
     minimum_pickup_time: float | None
@@ -27,7 +27,7 @@ class YemeksepetiRestaurantValue(RestaurantValue):
         return self.name
 
     def validate_rating(self) -> int | None:
-        if self.rating and not isinstance(self.rating, int):
+        if self.rating and not isinstance(self.rating, (int, float)):
             raise ValueError("invalid rating type expected.")
         return self.rating
 
@@ -37,9 +37,9 @@ class YemeksepetiRestaurantValue(RestaurantValue):
         return self.url_slug
 
     def validate_restaurant_id(self) -> str:
-        if not isinstance(self.restaurant_id, str):
+        if not self.restaurant_id:
             raise ValueError("invalid restaurant_id type expected.")
-        return self.restaurant_id
+        return str(self.restaurant_id)
 
     def validate_review_number(self) -> int | None:
         if self.review_number and not isinstance(self.review_number, int):
