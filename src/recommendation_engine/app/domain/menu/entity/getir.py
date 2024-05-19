@@ -44,10 +44,10 @@ class GetirMenu(BaseEntity, Processor):
         data = self._retrieve_json_from_response(response)
 
         menu_list = (
-            data.get("pageProps")
-            .get("initialState")
-            .get("restaurantDetail")
-            .get("menu")
+            data.get("pageProps", {})
+            .get("initialState", {})
+            .get("restaurantDetail", {})
+            .get("menu", {})
             .get("productCategories", [])
         )
         logger.info(f"Menu with {self.restaurant_slug} was crawled.")
