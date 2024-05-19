@@ -13,8 +13,8 @@ class RequestValue:
     def _format_template(self, template_params: dict) -> dict | None:
         if not self.template:
             return None
-
-        return eval(self.template.strip().format(**template_params))
+        template = " ".join(self.template.strip().split(" "))
+        return eval(template.format(**template_params))
 
     def retrieve_formatted_request(self, template_params: dict) -> dict:
         formatted_req = {

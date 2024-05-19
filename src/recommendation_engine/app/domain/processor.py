@@ -44,7 +44,7 @@ class Processor(ABC):
     @staticmethod
     def _retrieve_json_from_response(response: requests.Response) -> dict | None:
         try:
-            return response.json()
+            return response.json() if isinstance(response, requests.Response) else None
         except Exception as e:
             logger.exception(
                 f"given response object cannot be jsonable. url: {response.url}. error details: {e}"
