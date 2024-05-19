@@ -44,7 +44,7 @@ class GetirMenu(BaseEntity, Processor):
         data = self._retrieve_json_from_response(response)
 
         if not data:
-            return None
+            return []
 
         menu_list = (
             data.get("pageProps", {})

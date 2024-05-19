@@ -62,12 +62,6 @@ class GetirComments(BaseEntity, Processor):
 
             skip += 10
 
-    review_id: str
-    date_text: str
-    restaurant_rating: int
-    restaurant_comment: str
-    restaurant_reply: str | None
-    chips_rating: list[str] | None
 
     @staticmethod
     def transform_unstructured_data(record_value: dict) -> GetirCommentValue:
