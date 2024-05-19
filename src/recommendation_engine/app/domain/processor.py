@@ -64,7 +64,6 @@ class Processor(ABC):
                 method=sync_call_params.method,
                 headers=sync_call_params.headers,
             )
-            response.raise_for_status()
             logger.info(
                 f"Sync call method was successfully completed. Requested url is: {sync_call_params.url}"
             )
