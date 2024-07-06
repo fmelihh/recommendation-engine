@@ -22,6 +22,7 @@ coverage = "^7.5.0"
 pytest = "^8.2.0"
 sqlalchemy = "^2.0.31"
 sqlalchemy-clickhouse = "^0.1.5.post0"
+alembic = "^1.13.2"
 
 
 [build-system]
