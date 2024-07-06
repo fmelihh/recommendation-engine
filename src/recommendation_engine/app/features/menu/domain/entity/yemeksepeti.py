@@ -1,10 +1,10 @@
 from loguru import logger
 
 from ..values import GeoValue
-from ...entity import BaseEntity
-from ...request import RequestValue
-from ...value_stack import EntityValueStack
-from ...processor import Processor, SyncCallParams
+from ....entity import BaseEntity
+from ....request import RequestValue
+from ....value_stack import EntityValueStack
+from ....processor import Processor, SyncCallParams
 from ..values.yemeksepeti.menu import YemeksepetiMenuValue
 
 

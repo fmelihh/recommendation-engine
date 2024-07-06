@@ -2,11 +2,11 @@ from loguru import logger
 from typing import Generator
 
 from ..values import GeoValue
-from ...entity import BaseEntity
-from ...processor import Processor
-from ...request import RequestValue
-from ...processor import SyncCallParams
-from ...value_stack import EntityValueStack
+from ....entity import BaseEntity
+from ....processor import Processor
+from ....request import RequestValue
+from ....processor import SyncCallParams
+from ....value_stack import EntityValueStack
 from ..values.yemeksepeti import YemeksepetiRestaurantValue
 
 

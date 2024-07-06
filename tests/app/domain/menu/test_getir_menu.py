@@ -1,4 +1,4 @@
-from src.recommendation_engine.app.domain.menu.entity.getir import (
+from src.recommendation_engine.app.features.menu.domain.entity.getir import (
     GetirMenu,
 )
 

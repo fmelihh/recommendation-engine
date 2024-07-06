@@ -1,4 +1,4 @@
-from src.recommendation_engine.app.domain.comments.entity.getir import (
+from src.recommendation_engine.app.features.comments.domain.entity.getir import (
     GetirComments,
 )
 

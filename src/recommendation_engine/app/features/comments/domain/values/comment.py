@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from ...mixins import DataclassValidationMixin
+from ....mixins import DataclassValidationMixin
 
 
 @dataclass(frozen=True)

@@ -1,7 +1,7 @@
-from src.recommendation_engine.app.domain.restaurants.values import (
+from src.recommendation_engine.app.features.restaurants.domain.values import (
     GeoValue,
 )
-from src.recommendation_engine.app.domain.restaurants.entity.yemek_sepeti import (
+from src.recommendation_engine.app.features.restaurants.domain.entity.yemek_sepeti import (
     YemeksepetiRestaurants,
 )
 

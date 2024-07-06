@@ -13,9 +13,9 @@ from pydantic import field_validator
 from typing import TypeVar, List, Literal
 from pydantic import BaseModel, Field, AnyUrl
 
-from .menu.values import MenuValue
-from .comments.values import CommentValue
-from .restaurants.values import RestaurantValue
+from .menu.domain.values import MenuValue
+from .comments.domain.values import CommentValue
+from .restaurants.domain.values import RestaurantValue
 
 
 T = TypeVar("T", *[List[RestaurantValue], List[CommentValue], List[MenuValue]])

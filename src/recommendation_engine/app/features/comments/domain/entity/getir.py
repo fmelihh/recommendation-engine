@@ -1,11 +1,11 @@
 from loguru import logger
 from typing import Generator
 
-from ...entity import BaseEntity
-from ...request import RequestValue
-from ...value_stack import EntityValueStack
+from ....entity import BaseEntity
+from ....request import RequestValue
+from ....value_stack import EntityValueStack
 from ..values.getir import GetirCommentValue
-from ...processor import Processor, SyncCallParams
+from ....processor import Processor, SyncCallParams
 
 
 class GetirComments(BaseEntity, Processor):

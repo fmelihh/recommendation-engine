@@ -1,4 +1,4 @@
-from src.recommendation_engine.app.domain.comments.entity.yemek_sepeti import (
+from src.recommendation_engine.app.features.comments.domain.entity.yemek_sepeti import (
     YemekSepetiComments,
 )
 

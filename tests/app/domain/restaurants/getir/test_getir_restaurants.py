@@ -1,7 +1,7 @@
-from src.recommendation_engine.app.domain.restaurants.values import (
+from src.recommendation_engine.app.features.restaurants.domain.values import (
     GeoValue,
 )
-from src.recommendation_engine.app.domain.restaurants.entity.getir import (
+from src.recommendation_engine.app.features.restaurants.domain.entity.getir import (
     GetirRestaurants,
 )
 

@@ -1,10 +1,10 @@
 from loguru import logger
 from typing import Generator
 
-from ...entity import BaseEntity
-from ...request import RequestValue
-from ...value_stack import EntityValueStack
-from ...processor import Processor, SyncCallParams
+from ....entity import BaseEntity
+from ....request import RequestValue
+from ....value_stack import EntityValueStack
+from ....processor import Processor, SyncCallParams
 from ..values.yemeksepeti import YemeksepetiCommentValue
 
 

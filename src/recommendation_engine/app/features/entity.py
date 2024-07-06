@@ -10,5 +10,5 @@ class BaseEntity(ABC):
         if isinstance(value, type(self)):
             return self.entity_id == value.entity_id
 
-    def __hash__(self) -> int:
+    def __hash__(self) -> str:
         return self.entity_id
