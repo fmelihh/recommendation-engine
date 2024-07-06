@@ -6,15 +6,13 @@ from ..menu import MenuValue
 
 
 @dataclass(frozen=True)
-class GetirMenuValue(MenuValue):
+class YemeksepetiMenuValue(MenuValue):
     category: str
-    product_id: str
+    product_id: str | None
     name: str
-    price: Price
+    price: Price | float | list
     description: str
     image_url: str | None
-    full_screen_image_url: str | None
-    is_available: bool
 
     def validate_category(self) -> str:
         if not isinstance(self.category, str):
@@ -22,9 +20,9 @@ class GetirMenuValue(MenuValue):
         return self.category
 
     def validate_product_id(self) -> str:
-        if not isinstance(self.product_id, str):
+        if not self.product_id:
             raise ValueError("Invalid menu product id type expected.")
-        return self.product_id
+        return str(self.product_id)
 
     def validate_name(self) -> str:
         if not isinstance(self.name, str):
@@ -32,10 +30,13 @@ class GetirMenuValue(MenuValue):
         return self.name
 
     def validate_price(self) -> Price:
-        if not isinstance(self.price, str):
+        if not self.price:
             raise ValueError("Invalid menu price type expected.")
 
-        amount = self.price.replace("₺", "").replace(",", ".").strip()
+        amount = 0
+        if isinstance(self.price, list):
+            amount = self.price[0].get("price", 0) if len(self.price) > 0 else 0
+
         amount = float(amount)
         return Price(amount=amount, currency="TL")
 
@@ -50,15 +51,3 @@ class GetirMenuValue(MenuValue):
         if len(self.image_url) == 0:
             return None
         return str(HttpUrl(self.image_url))
-
-    def validate_full_screen_image_url(self) -> str | None:
-        if not isinstance(self.full_screen_image_url, str):
-            raise ValueError("Invalid menu full_screen_image_url type expected.")
-        if len(self.full_screen_image_url) == 0:
-            return None
-        return str(HttpUrl(self.full_screen_image_url))
-
-    def validate_is_available(self) -> bool:
-        if not isinstance(self.is_available, bool):
-            raise ValueError("Invalid menu is available type expected.")
-        return self.is_available
