@@ -11,4 +11,4 @@ def test_getir_restaurants():
     yemeksepeti_restaurants = YemeksepetiRestaurants(geo_value=geo_value)
     results = yemeksepeti_restaurants.process(process_limit=1)
     assert isinstance(results, list)
-    # assert len(results) > 0
+    assert len(results) > 0

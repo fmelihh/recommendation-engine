@@ -62,7 +62,6 @@ class GetirComments(BaseEntity, Processor):
 
             skip += 10
 
-
     @staticmethod
     def transform_unstructured_data(record_value: dict) -> GetirCommentValue:
         values = dict()
