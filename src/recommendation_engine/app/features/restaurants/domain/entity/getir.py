@@ -66,7 +66,7 @@ class GetirRestaurants(BaseEntity, Processor):
                 break
 
             restaurants = (
-                data.get("data", {}).get("restaurantSection", {}).get("restaurants")
+                data.get("db", {}).get("restaurantSection", {}).get("restaurants")
             )
 
             if not restaurants:
@@ -74,7 +74,7 @@ class GetirRestaurants(BaseEntity, Processor):
 
             yield restaurants
             logger.info(
-                f"page {skip} was crawled. total crawled data is {len(self.restaurant_stack)}"
+                f"page {skip} was crawled. total crawled db is {len(self.restaurant_stack)}"
             )
 
             skip += 10

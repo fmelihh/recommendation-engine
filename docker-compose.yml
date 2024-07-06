@@ -26,7 +26,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ./data/redis:/data
+      - ./db/redis:/db
 
   ch_server:
     image: yandex/clickhouse-server

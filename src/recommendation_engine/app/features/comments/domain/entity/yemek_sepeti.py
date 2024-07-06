@@ -63,7 +63,7 @@ class YemekSepetiComments(BaseEntity, Processor):
             if not data:
                 break
 
-            comments = data.get("data")
+            comments = data.get("db")
             next_page_key = data.get("pageKey", "")
 
             if not comments:
@@ -71,7 +71,7 @@ class YemekSepetiComments(BaseEntity, Processor):
 
             yield comments
             logger.info(
-                f"Page was crawled. total crawled data is {len(self.comment_stack)}"
+                f"Page was crawled. total crawled db is {len(self.comment_stack)}"
             )
             if not next_page_key:
                 break

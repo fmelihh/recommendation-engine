@@ -50,14 +50,14 @@ class GetirComments(BaseEntity, Processor):
             if not data:
                 break
 
-            comments = data.get("data", {}).get("reviews", [])
+            comments = data.get("db", {}).get("reviews", [])
 
             if not comments:
                 break
 
             yield comments
             logger.info(
-                f"page {skip} was crawled. total crawled data is {len(self.comment_stack)}"
+                f"page {skip} was crawled. total crawled db is {len(self.comment_stack)}"
             )
 
             skip += 10
