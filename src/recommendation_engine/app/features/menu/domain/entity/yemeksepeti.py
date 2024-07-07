@@ -65,7 +65,7 @@ class YemeksepetiMenu(BaseEntity, Processor):
         if not data:
             return []
 
-        menu_list = data.get("db", {}).get("menus", [])
+        menu_list = data.get("data", {}).get("menus", [])
         if len(menu_list) > 0:
             menu_list = menu_list[0].get("menu_categories")
         logger.info(f"Menu with {self.restaurant_id} was crawled.")

@@ -66,7 +66,7 @@ class GetirRestaurants(BaseEntity, Processor):
                 break
 
             restaurants = (
-                data.get("db", {}).get("restaurantSection", {}).get("restaurants")
+                data.get("data", {}).get("restaurantSection", {}).get("restaurants")
             )
 
             if not restaurants:

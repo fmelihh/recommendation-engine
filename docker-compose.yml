@@ -26,14 +26,14 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ./db/redis:/db
+      - ./data/redis:/data
 
   ch_server:
     image: yandex/clickhouse-server
     ports:
       - "8123:8123"
     volumes:
-      - ./db:/var/lib/clickhouse
+      - ./data:/var/lib/clickhouse
     networks:
       - ch_ntw
 

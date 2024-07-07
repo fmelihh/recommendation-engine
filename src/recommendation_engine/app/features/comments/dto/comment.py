@@ -3,8 +3,10 @@ from pydantic import BaseModel, Field
 
 
 class CommentDto(BaseModel):
-    reply: str
     rating: int
     comment: str
     comment_id: str
-    comment_date: datetime.datetime | None = Field(default=None)
+    replies: list[str]
+    like_count: int = Field(default=0)
+    created_at: datetime.datetime | None = Field(default=None)
+    updated_at: datetime.datetime | None = Field(default=None)
