@@ -14,11 +14,11 @@ class GetirRestaurantValue(RestaurantValue):
     slug: str | None = None
     image_url: str | None = None
     rating_point: float | None = None
-    rating_count: RatingCount | None = None
-    min_basket_size: Price | None = None
-    restaurant_min_basket_size: Price | None = None
-    estimated_delivery_time: DeliveryTime | None = None
-    delivery_fee: Price | None = None
+    rating_count: RatingCount | str | None = None
+    min_basket_size: Price | str | None = None
+    restaurant_min_basket_size: Price | str | None = None
+    estimated_delivery_time: DeliveryTime | dict | None = None
+    delivery_fee: Price | str | None = None
 
     def validate_id(self) -> str:
         if not isinstance(self.id, str):

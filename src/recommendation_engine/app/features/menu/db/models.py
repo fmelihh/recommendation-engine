@@ -5,7 +5,7 @@ from ....core.database.clickhouse import ClickhouseBase
 
 
 class MenuModel(ClickhouseBase):
-    __tablename__ = "comments"
+    __tablename__ = "menu"
 
     category: str = Column(String)
     product_id: str | None = Column(String)
