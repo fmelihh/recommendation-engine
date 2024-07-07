@@ -37,7 +37,7 @@ def test_yemeksepeti_mapper():
         rating=[
             {"topic": "overall", "score": 1},
             {"topic": "restaurant_food", "score": 1},
-            {"topic": "rider", "score": 1}
+            {"topic": "rider", "score": 1},
         ],
         comment_like_count=2,
         product_variation=[],
