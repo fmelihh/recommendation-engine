@@ -10,7 +10,7 @@ class GetirMenuValue(MenuValue):
     category: str
     product_id: str
     name: str
-    price: Price
+    price: Price | str
     description: str
     image_url: str | None
     full_screen_image_url: str | None
