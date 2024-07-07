@@ -9,7 +9,6 @@ class GetirCommentValue(CommentValue):
     restaurant_rating: int
     restaurant_comment: str
     restaurant_reply: str | None
-    chips_rating: list[str] | None
 
     def validate_review_id(self) -> str:
         if self.review_id and not isinstance(self.review_id, str):
@@ -35,15 +34,3 @@ class GetirCommentValue(CommentValue):
         if not isinstance(self.restaurant_comment, str):
             raise ValueError("Invalid comment type expected.")
         return self.restaurant_comment
-
-    def validate_chips_rating(self) -> list[str] | None:
-        if self.chips_rating and not isinstance(self.chips_rating, list):
-            raise ValueError("Invalid comment chips rating type expected.")
-        if not self.chips_rating:
-            return None
-
-        return [
-            element.get("chipText")
-            for element in self.chips_rating
-            if isinstance(element, dict) and element.get("chipText")
-        ]

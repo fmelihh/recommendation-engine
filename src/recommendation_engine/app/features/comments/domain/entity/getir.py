@@ -50,7 +50,7 @@ class GetirComments(BaseEntity, Processor):
             if not data:
                 break
 
-            comments = data.get("db", {}).get("reviews", [])
+            comments = data.get("data", {}).get("reviews", [])
 
             if not comments:
                 break
@@ -65,13 +65,11 @@ class GetirComments(BaseEntity, Processor):
     @staticmethod
     def transform_unstructured_data(record_value: dict) -> GetirCommentValue:
         values = dict()
-        values["review_id"] = record_value.get("uuid")
-        values["date_text"] = record_value.get("createdAt")
+        values["review_id"] = record_value.get("id")
+        values["date_text"] = record_value.get("dateText")
         values["restaurant_reply"] = record_value.get("text")
         values["restaurant_rating"] = record_value.get("restaurantRating")
         values["restaurant_comment"] = record_value.get("restaurantComment")
-        values["chips_rating"] = record_value.get("chipsRating")
-
         comment_value = GetirCommentValue(**values)
         return comment_value
 
