@@ -8,7 +8,7 @@ from src.recommendation_engine.app.features.restaurants.domain.values.getir impo
     GetirRestaurantValue,
 )
 from src.recommendation_engine.app.features.restaurants.domain.values.yemeksepeti import (
-    YemeksepetiRestaurantValue
+    YemeksepetiRestaurantValue,
 )
 
 
@@ -42,8 +42,10 @@ def test_yemeksepeti_mapper():
         minimum_delivery_fee=1,
         minimum_delivery_time=1,
         original_delivery_fee=1,
-        loyalty_percentage_amount=1
+        loyalty_percentage_amount=1,
     )
 
-    res = RestaurantMapper.yemeksepeti_restaurant_to_dto(value_object=yemeksepeti_domain_value)
+    res = RestaurantMapper.yemeksepeti_restaurant_to_dto(
+        value_object=yemeksepeti_domain_value
+    )
     assert isinstance(res, RestaurantDto)

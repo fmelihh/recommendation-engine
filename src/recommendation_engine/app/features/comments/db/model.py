@@ -2,7 +2,7 @@ import datetime
 from clickhouse_sqlalchemy import engines
 from sqlalchemy import Column, Integer, String, DateTime, Array
 
-from ....core.database.clickhouse import ClickhouseBase
+from ....shared_kernel.database.clickhouse import ClickhouseBase
 
 
 class CommentsModel(ClickhouseBase):

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from ....mixins import DataclassValidationMixin
+from recommendation_engine.app.shared_kernel.mixins import DataclassValidationMixin
 
 
 @dataclass(frozen=True)

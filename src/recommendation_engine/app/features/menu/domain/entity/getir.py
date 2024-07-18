@@ -1,10 +1,10 @@
 from loguru import logger
 
-from ....entity import BaseEntity
-from ....request import RequestValue
 from ..values.getir import GetirMenuValue
-from ....value_stack import EntityValueStack
-from ....processor import Processor, SyncCallParams
+from .....shared_kernel.entity import BaseEntity
+from .....shared_kernel.request import RequestValue
+from .....shared_kernel.value_stack import EntityValueStack
+from .....shared_kernel.processor import Processor, SyncCallParams
 
 
 class GetirMenu(BaseEntity, Processor):

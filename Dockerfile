@@ -27,6 +27,6 @@ RUN apt update && \
 RUN poetry install --no-root --no-dev -vvv
 
 
-#RUN pip install --no-cache-dir b2m.core b2m.client b2m.ingestion.executor b2m.dataframe.csv b2m.dataframe.excel b2m.datasource.s3 b2m.datasource.sql b2m.api b2m.ml.automl b2m.mljar.supervised b2m.ml.bigdata -i http://odin:asgard_2021.@3.67.172.47/simple/ --trusted-host 3.67.172.47
+#RUN pip install --no-cache-dir b2m.shared_kernel b2m.client b2m.ingestion.executor b2m.dataframe.csv b2m.dataframe.excel b2m.datasource.s3 b2m.datasource.sql b2m.api b2m.ml.automl b2m.mljar.supervised b2m.ml.bigdata -i http://odin:asgard_2021.@3.67.172.47/simple/ --trusted-host 3.67.172.47
 
 WORKDIR /opt/search

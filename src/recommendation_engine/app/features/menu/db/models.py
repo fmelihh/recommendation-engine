@@ -1,7 +1,7 @@
 from clickhouse_sqlalchemy import engines
 from sqlalchemy import Column, String, Float
 
-from ....core.database.clickhouse import ClickhouseBase
+from ....shared_kernel.database.clickhouse import ClickhouseBase
 
 
 class MenuModel(ClickhouseBase):

@@ -1,11 +1,11 @@
 from loguru import logger
 
 from ..values import GeoValue
-from ....entity import BaseEntity
-from ....request import RequestValue
-from ....value_stack import EntityValueStack
-from ....processor import Processor, SyncCallParams
+from .....shared_kernel.entity import BaseEntity
+from .....shared_kernel.request import RequestValue
 from ..values.yemeksepeti.menu import YemeksepetiMenuValue
+from .....shared_kernel.value_stack import EntityValueStack
+from .....shared_kernel.processor import Processor, SyncCallParams
 
 
 class YemeksepetiMenu(BaseEntity, Processor):

@@ -1,8 +1,8 @@
 from typing import TypeVar
 
-from .menu.domain.values import MenuValue
-from .comments.domain.values import CommentValue
-from .restaurants.domain.values import RestaurantValue
+from recommendation_engine.app.features.menu.domain.values import MenuValue
+from recommendation_engine.app.features.comments.domain.values import CommentValue
+from recommendation_engine.app.features.restaurants.domain.values import RestaurantValue
 
 
 Z = TypeVar("Z", RestaurantValue, CommentValue, MenuValue)
