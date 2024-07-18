@@ -25,6 +25,7 @@ sqlalchemy-clickhouse = "^0.1.5.post0"
 alembic = "^1.13.2"
 clickhouse-sqlalchemy = "^0.3.2"
 python-dotenv = "^1.0.1"
+addict = "^2.4.0"
 
 
 [build-system]
