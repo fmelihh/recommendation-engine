@@ -1,5 +1,20 @@
+import os
 import uvicorn
 from fastapi import FastAPI
+from dotenv import load_dotenv
+
+from src.recommendation_engine.app.shared_kernel.scheduler.celery_app import (
+    celery_application,
+)
+from src.recommendation_engine.app.tasks import *
+
+env = os.getenv("ENVIRONMENT", "local")
+
+if env == "docker":
+    load_dotenv(".env.docker")
+else:
+    load_dotenv(".env.local")
+
 
 app = FastAPI()
 
