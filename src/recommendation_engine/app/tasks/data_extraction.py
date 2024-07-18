@@ -1,3 +1,4 @@
+import celery
 from celery.app.task import Task
 from celery.schedules import crontab
 
@@ -8,7 +9,15 @@ class DataExtractionTask(Task):
     __name__ = "DataExtractionTask"
 
     def run(self, *args, **kwargs):
-        pass
+        from .menu import MenuTask
+        from .comments import CommentTask
+        from .restaurant import RestaurantTask
+
+        menu_task = MenuTask()
+        comment_task = CommentTask()
+        restaurant_task = RestaurantTask()
+
+        celery.chain(restaurant_task.s(), menu_task.s(), comment_task.s()).apply_async()
 
 
 celery_application.register_task(DataExtractionTask)
