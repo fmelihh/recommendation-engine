@@ -20,16 +20,16 @@ class DataExtractionTask(Task):
         cities = json.load(open(f"{os.getcwd()}/static/cities.json", "r"))
 
         for i in range(0, len(cities), batch_size):
-            batch = cities[i:i + batch_size]
+            batch = cities[i : i + batch_size]
             tasks = []
 
             for city in batch:
                 restaurant_task = RestaurantTask()
                 tasks.append(
                     celery.chain(
-                        restaurant_task.s(lat=city['lat'], lon=city['lon']),
+                        restaurant_task.s(lat=city["lat"], lon=city["lon"]),
                         MenuTask().s(),
-                        CommentTask().s()
+                        CommentTask().s(),
                     )
                 )
             celery.group(*tasks).apply_async()
