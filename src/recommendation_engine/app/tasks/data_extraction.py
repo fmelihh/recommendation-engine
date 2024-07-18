@@ -1,4 +1,7 @@
+import os
+import json
 import celery
+from loguru import logger
 from celery.app.task import Task
 from celery.schedules import crontab
 
@@ -13,11 +16,24 @@ class DataExtractionTask(Task):
         from .comments import CommentTask
         from .restaurant import RestaurantTask
 
-        menu_task = MenuTask()
-        comment_task = CommentTask()
-        restaurant_task = RestaurantTask()
+        batch_size = 3
+        cities = json.load(open(f"{os.getcwd()}/static/cities.json", "r"))
 
-        celery.chain(restaurant_task.s(), menu_task.s(), comment_task.s()).apply_async()
+        for i in range(0, len(cities), batch_size):
+            batch = cities[i:i + batch_size]
+            tasks = []
+
+            for city in batch:
+                restaurant_task = RestaurantTask()
+                tasks.append(
+                    celery.chain(
+                        restaurant_task.s(lat=city['lat'], lon=city['lon']),
+                        MenuTask().s(),
+                        CommentTask().s()
+                    )
+                )
+            celery.group(*tasks).apply_async()
+            logger.info(f"Data Extraction Task queue started.")
 
 
 celery_application.register_task(DataExtractionTask)
