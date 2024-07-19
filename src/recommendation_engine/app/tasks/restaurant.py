@@ -13,7 +13,7 @@ class RestaurantTask(Task):
     def run(self, *args, **kwargs):
         restaurant_service = RestaurantService()
         restaurant_extractor = RestaurantExtractorService(
-            lat=kwargs["lat"], lon=kwargs["lon"]
+            provider_type=kwargs["provider"], lat=kwargs["lat"], lon=kwargs["lon"]
         )
 
         restaurant_list = restaurant_extractor.crawl()
