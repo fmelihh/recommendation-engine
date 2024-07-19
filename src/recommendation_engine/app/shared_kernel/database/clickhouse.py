@@ -1,3 +1,4 @@
+import os
 from loguru import logger
 from typing import Iterator
 
@@ -6,7 +7,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 
 
-engine = create_engine("clickhouse+native://default:@localhost/default", future=True)
+engine = create_engine("clickhouse+native://default:@localhost:8123/default", future=True)
 
 SessionLocal = sessionmaker(
     autocommit=False,
