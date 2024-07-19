@@ -27,7 +27,7 @@ class GetirMenu(BaseEntity, Processor):
         self.restaurant_slug = restaurant_slug
         self.filter_and_search_payload = RequestValue(
             url=(
-                f"https://getir.com/_next/data/7HQpuSyAziWr_FcD2irMg/tr/yemekPage"
+                f"https://getir.com/_next/data/oWi_MV8ZFRM1q4z79rkT7/tr/yemekPage"
                 f"/restaurants/{self.restaurant_slug}.json?slug={self.restaurant_slug}"
             ),
             method="GET",
