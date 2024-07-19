@@ -29,7 +29,9 @@ class DataExtractionTask(Task):
                     restaurant_task = RestaurantTask()
                     tasks.append(
                         celery.chain(
-                            restaurant_task.s(provider=provider, lat=city["lat"], lon=city["lon"]),
+                            restaurant_task.s(
+                                provider=provider, lat=city["lat"], lon=city["lon"]
+                            ),
                             MenuTask().s(),
                             CommentTask().s(),
                         )
