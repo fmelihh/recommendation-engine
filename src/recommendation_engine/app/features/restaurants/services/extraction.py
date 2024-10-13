@@ -23,7 +23,7 @@ class RestaurantExtractorService(Extractor):
         elif provider_type == Providers.GETIR:
             return GetirRestaurants(geo_value)
         else:
-            ValueError("Provider is not defined.")
+            raise ValueError("Provider is not defined.")
 
     def crawl(self) -> List[RestaurantValue]:
         return self.provider.process()

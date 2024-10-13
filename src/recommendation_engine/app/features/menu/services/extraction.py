@@ -25,7 +25,7 @@ class MenuExtractorService(Extractor):
         elif provider_type == Providers.GETIR:
             return GetirMenu(restaurant_slug=self.kwargs.restaurant_slug)
         else:
-            ValueError("Provider is not defined.")
+            raise ValueError("Provider is not defined.")
 
     def crawl(self) -> List[MenuValue]:
         return self.provider.process()
