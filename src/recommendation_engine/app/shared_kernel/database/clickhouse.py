@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 
 
-engine = create_engine(os.getenv("CLICKHOUSE_URL"), future=True)
+engine = create_engine(os.getenv("CLICKHOUSE_URL"))
 
 SessionLocal = sessionmaker(
     autocommit=False,
@@ -29,4 +29,4 @@ def get_session() -> Iterator[Session]:
         db.close()
 
 
-__all__ = ["get_session", "ClickhouseBase"]
+__all__ = ["get_session", "ClickhouseBase", "engine"]
