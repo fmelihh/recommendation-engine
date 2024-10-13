@@ -37,7 +37,7 @@ class DataExtractionTask(Task):
                         )
                     )
                 celery.group(*tasks).apply_async()
-                logger.info(f"Data Extraction Task queue started.")
+                logger.info("Data Extraction Task queue started.")
 
 
 celery_application.register_task(DataExtractionTask)

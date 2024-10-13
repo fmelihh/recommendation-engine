@@ -1,5 +1,3 @@
-import datetime
-
 from src.recommendation_engine.app.features.comments.dto.comment import CommentDto
 from src.recommendation_engine.app.features.comments.mappers.comment import (
     CommentMapper,
@@ -9,9 +7,6 @@ from src.recommendation_engine.app.features.comments.domain.values.getir import 
 )
 from src.recommendation_engine.app.features.comments.domain.values.yemeksepeti.comment import (
     YemeksepetiCommentValue,
-    YemeksepetiReplies,
-    YemekSepetiRating,
-    ProductVariation,
 )
 
 
