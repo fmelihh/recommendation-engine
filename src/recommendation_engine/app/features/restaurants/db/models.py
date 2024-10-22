@@ -1,7 +1,7 @@
 import uuid
 from clickhouse_sqlalchemy import engines
 from sqlalchemy import Column
-from clickhouse_sqlalchemy.types import  String, Float, Int32
+from clickhouse_sqlalchemy.types import String, Float, Int32
 
 from ....shared_kernel.database.clickhouse import ClickhouseBase
 

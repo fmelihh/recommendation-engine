@@ -10,7 +10,7 @@ class MenuModel(ClickhouseBase):
     __tablename__ = "menu"
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    category= Column(String)
+    category = Column(String)
     product_id = Column(String)
     name = Column(String)
     description = Column(String)

@@ -1,5 +1,4 @@
 import uuid
-import datetime
 from clickhouse_sqlalchemy import engines
 from sqlalchemy import Column
 from clickhouse_sqlalchemy.types import Int32, String, DateTime, Array
