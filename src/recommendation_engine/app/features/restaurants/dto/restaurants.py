@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 
 class RestaurantDto(BaseModel):
     name: str
-    rating: float
+    rating: float | None = Field(default=None)
     restaurant_id: str
     delivery_fee: float
     restaurant_slug: str
