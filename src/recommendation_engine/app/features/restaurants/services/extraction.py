@@ -1,9 +1,10 @@
-from typing import List
+from typing import List, Callable
 
 from ..domain.values import GeoValue
+from ..dto.restaurants import RestaurantDto
 from ....shared_kernel.extractor import Extractor
+from ..mappers.restaurants import RestaurantMapper
 from ..domain.entity.getir import GetirRestaurants
-from ..domain.values.restaurant import RestaurantValue
 from ....shared_kernel.domain_providers import Providers
 from ..domain.entity.yemek_sepeti import YemeksepetiRestaurants
 
@@ -13,6 +14,15 @@ class RestaurantExtractorService(Extractor):
         self.lat = lat
         self.lon = lon
         self.provider = self.initialize_provider(provider_type)
+        self.mapper_function = self.initialize_mapper_function(provider_type)
+
+    def initialize_mapper_function(self, provider_type: Providers) -> Callable:
+        if provider_type == Providers.YEMEK_SEPETI:
+            return RestaurantMapper.yemeksepeti_restaurant_to_dto
+        elif provider_type == Providers.GETIR:
+            return RestaurantMapper.getir_restaurant_to_dto
+        else:
+            raise ValueError("Provider is not defined.")
 
     def initialize_provider(
         self, provider_type: Providers
@@ -25,5 +35,5 @@ class RestaurantExtractorService(Extractor):
         else:
             raise ValueError("Provider is not defined.")
 
-    def crawl(self) -> List[RestaurantValue]:
-        return self.provider.process()
+    def crawl(self) -> List[RestaurantDto]:
+        return [self.mapper_function(element) for element in self.provider.process()]

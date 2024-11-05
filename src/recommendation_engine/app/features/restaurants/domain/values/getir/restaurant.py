@@ -47,9 +47,9 @@ class GetirRestaurantValue(RestaurantValue):
         except Exception:
             raise ValueError("invalid rating point type expected.")
 
-    def validate_rating_count(self) -> RatingCount:
+    def validate_rating_count(self) -> RatingCount | None:
         if not isinstance(self.rating_count, str):
-            raise ValueError("invalid rating count type expected.")
+            return None
 
         is_exceed_count = "+" in self.rating_count
         count = (

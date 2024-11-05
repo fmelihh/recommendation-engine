@@ -7,7 +7,9 @@ from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 
 
-engine = create_engine(os.getenv("CLICKHOUSE_URL"))
+engine = create_engine(
+    os.getenv("CLICKHOUSE_URL", "clickhouse+native://default:@localhost:9000/default")
+)
 
 SessionLocal = sessionmaker(
     autocommit=False,
