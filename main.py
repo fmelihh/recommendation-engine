@@ -1,9 +1,10 @@
 import os
-import inspect
-import uvicorn
 import dotenv
+import uvicorn
+import inspect
 from loguru import logger
 from fastapi import FastAPI
+from sqlalchemy import inspect as sqlalchemy_inspect
 
 
 env = os.getenv("ENVIRONMENT", "local")
@@ -36,12 +37,16 @@ app = FastAPI()
 
 
 def create_tables():
+    inspector = sqlalchemy_inspect(engine)
+
     for name, obj in globals().items():
         if inspect.isclass(obj):
             if issubclass(obj, ClickhouseBase) and obj != ClickhouseBase:
-                obj.__table__.create(engine)
-                logger.info(f"{name} Clickhouse Table Created.")
-
+                if not inspector.has_table(obj.__tablename__):
+                    obj.__table__.create(engine)
+                    logger.info(f"{name} Clickhouse Table Created.")
+                else:
+                    logger.info(f"{name} Clickhouse Table Already Exists.")
 
 @app.get("/")
 def hello_world():
