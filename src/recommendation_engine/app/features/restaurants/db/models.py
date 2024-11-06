@@ -1,4 +1,5 @@
 import uuid
+import hashlib
 import pendulum
 from sqlalchemy import Column
 from clickhouse_sqlalchemy import engines
@@ -14,11 +15,11 @@ class RestaurantModel(ClickhouseBase):
     name = Column(String)
     rating = Column(Nullable(Float))
     restaurant_id = Column(String)
-    delivery_fee = Column(Float)
+    delivery_fee = Column(Nullable(Float))
     restaurant_slug = Column(String)
-    delivery_time = Column(Float)
-    delivery_fee_currency = Column(String)
-    review_number = Column(Int32)
+    delivery_time = Column(Nullable(String))
+    delivery_fee_currency = Column(Nullable(String))
+    review_number = Column(Int32, default=0)
     image_url = Column(Nullable(String))
     order_amount = Column(Nullable(Float))
     order_amount_currency = Column(Nullable(String))

@@ -5,10 +5,10 @@ class RestaurantDto(BaseModel):
     name: str
     rating: float | None = Field(default=None)
     restaurant_id: str
-    delivery_fee: float
+    delivery_fee: float | None = Field(default=None)
     restaurant_slug: str
-    delivery_time: float
-    delivery_fee_currency: str
+    delivery_time: str | None = Field(default=None)
+    delivery_fee_currency: str | None = Field(default=None)
     review_number: int = Field(default=0)
     image_url: str | None = Field(default=None)
     order_amount: float | None = Field(default=None)

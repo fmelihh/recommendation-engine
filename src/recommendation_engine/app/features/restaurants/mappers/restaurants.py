@@ -35,6 +35,6 @@ class RestaurantMapper:
             review_number=value_object.rating_count.count,
             delivery_fee=value_object.delivery_fee.amount,
             delivery_fee_currency=value_object.delivery_fee.currency,
-            delivery_time=value_object.estimated_delivery_time.le,
+            delivery_time=value_object.estimated_delivery_time.unit,
         )
         return restaurant_dto

@@ -1,50 +1,51 @@
 services:
-  search-project:
-    image: search-project
-    build:
-      context: .
-      dockerfile: Dockerfile
-    hostname: search-project
-    container_name: search-project
-    user: root
-    environment:
-      - ENVIRONMENT=docker
-    command: "python /opt/search/main.py"
-    ports:
-      - "8000:8000"
-    volumes:
-      - .:/opt/search
-    depends_on:
-      - "redis"
-  celery_worker:
-    hostname: search-celery-worker
-    container_name: search-celery-worker
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - ENVIRONMENT=docker
-    command: >
-      bash -c "celery -A main.celery_app worker -l info -E -Q periodic,daily"
-    volumes:
-      - .:/opt/b2m
-    depends_on:
-      - "redis"
-  celery-beat:
-    image: search-celery-beat
-    hostname: search-celery-beat
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - ENVIRONMENT=docker
-    command: >
-      bash -c " celery -A b2metric.celery.app beat -s data/redis/scheduler.db -S redbeat.RedBeatScheduler -l INFO"
-    volumes:
-      - .:/opt/b2m
-    depends_on:
-      - "search-project"
-      - "redis"
+#  search-project:
+#    image: search-project
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    hostname: search-project
+#    container_name: search-project
+#    user: root
+#    environment:
+#      - ENVIRONMENT=docker
+#    command: "python /opt/search/main.py"
+#    ports:
+#      - "8000:8000"
+#    volumes:
+#      - .:/opt/search
+#    depends_on:
+#      - "redis"
+#  celery_worker:
+#    hostname: search-celery-worker
+#    container_name: search-celery-worker
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    environment:
+#      - ENVIRONMENT=docker
+#    command: >
+#      bash -c "celery -A main.celery_app worker -l info -E -Q periodic,daily"
+#    volumes:
+#      - .:/opt/b2m
+#    depends_on:
+#      - "redis"
+#  celery-beat:
+#    image: search-celery-beat
+#    hostname: search-celery-beat
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    environment:
+#      - ENVIRONMENT=docker
+#    command: >
+#      bash -c " celery -A b2metric.celery.app beat -s data/redis/scheduler.db -S redbeat.RedBeatScheduler -l INFO"
+#    volumes:
+#      - .:/opt/b2m
+#    depends_on:
+#      - "search-project"
+#      - "redis"
+
   redis:
     image: redis
     hostname: redis

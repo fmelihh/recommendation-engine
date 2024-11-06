@@ -4,7 +4,6 @@ from celery.app.task import Task
 from celery.schedules import crontab
 
 from ..shared_kernel.domain_providers import Providers
-from ..features.restaurants.mappers.restaurants import RestaurantMapper
 from ..shared_kernel.scheduler.celery_app import celery_application
 from ..features.restaurants.services import (
     RestaurantService,
@@ -20,15 +19,21 @@ class RestaurantTask(Task):
 
         for city in cities:
             for provider in Providers:
+                lat = float(city["latitude"])
+                lon = float(city["longitude"])
+
                 restaurant_service = RestaurantService()
                 restaurant_extractor = RestaurantExtractorService(
-                    provider_type=provider,
-                    lat=float(city["latitude"]),
-                    lon=float(city["longitude"]),
+                    provider_type=provider, lat=lat, lon=lon
                 )
 
                 restaurant_list = restaurant_extractor.crawl()
-                restaurant_service.parse_all_restaurants(restaurant_list)
+                restaurant_service.parse_all_restaurants(
+                    restaurants=restaurant_list,
+                    lat=lat,
+                    lon=lon,
+                    city=city["name"].upper(),
+                )
 
 
 celery_application.register_task(RestaurantTask)

@@ -49,7 +49,7 @@ class GetirRestaurantValue(RestaurantValue):
 
     def validate_rating_count(self) -> RatingCount | None:
         if not isinstance(self.rating_count, str):
-            return None
+            return RatingCount(count=0)
 
         is_exceed_count = "+" in self.rating_count
         count = (
@@ -59,16 +59,18 @@ class GetirRestaurantValue(RestaurantValue):
 
     def validate_min_basket_size(self) -> Price | None:
         if self.min_basket_size is None:
-            return None
+            return Price(amount=0, currency="TL")
+
         if not isinstance(self.min_basket_size, str):
             raise ValueError("invalid min basket size type expected.")
+
         amount = self.min_basket_size.replace("₺", "").replace(",", ".").strip()
         amount = float(amount)
         return Price(amount=amount, currency="TL")
 
     def validate_restaurant_min_basket_size(self) -> Price | None:
         if self.restaurant_min_basket_size is None:
-            return None
+            return Price(amount=0, currency="TL")
 
         if not isinstance(self.restaurant_min_basket_size, str):
             raise ValueError("invalid restaurant min basket size expected.")
@@ -85,7 +87,7 @@ class GetirRestaurantValue(RestaurantValue):
             "value" not in self.estimated_delivery_time
             and "suffix" not in self.estimated_delivery_time
         ):
-            return None
+            return DeliveryTime(le=0, ge=0)
 
         unit = self.estimated_delivery_time["suffix"].strip()
         le, ge = self.estimated_delivery_time["value"].split("-")
@@ -96,7 +98,7 @@ class GetirRestaurantValue(RestaurantValue):
 
     def validate_delivery_fee(self) -> Price | None:
         if self.delivery_fee is None:
-            return None
+            return Price(amount=0.0, currency="TL")
 
         if not isinstance(self.delivery_fee, str):
             raise ValueError("invalid delivery fee type expected.")

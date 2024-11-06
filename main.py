@@ -48,6 +48,7 @@ def create_tables():
                 else:
                     logger.info(f"{name} Clickhouse Table Already Exists.")
 
+
 @app.get("/")
 def hello_world():
     return "hello world"

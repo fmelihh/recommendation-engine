@@ -5,4 +5,4 @@ from dataclasses import dataclass
 class DeliveryTime:
     le: float
     ge: float
-    unit: str
+    unit: str | None = None
