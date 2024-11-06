@@ -1,5 +1,4 @@
 import uuid
-import hashlib
 import pendulum
 from sqlalchemy import Column
 from clickhouse_sqlalchemy import engines
@@ -12,6 +11,7 @@ class RestaurantModel(ClickhouseBase):
     __tablename__ = "restaurant"
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
 
+    provider = Column(String)
     name = Column(String)
     rating = Column(Nullable(Float))
     restaurant_id = Column(String)
