@@ -19,6 +19,7 @@ class RestaurantTask(Task):
 
         for city in cities:
             for provider in Providers:
+
                 lat = float(city["latitude"])
                 lon = float(city["longitude"])
 
