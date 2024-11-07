@@ -16,7 +16,7 @@ class YemeksepetiRestaurantValue(RestaurantValue):
     minimum_pickup_time: float | None
     minimum_order_amount: Price | float | None
     minimum_delivery_fee: Price | float | None
-    minimum_delivery_time: float | None
+    minimum_delivery_time: float | str | None
     original_delivery_fee: Price | float | None
     loyalty_percentage_amount: float | None
 
@@ -81,13 +81,13 @@ class YemeksepetiRestaurantValue(RestaurantValue):
 
         return Price(amount=float(self.minimum_delivery_fee), currency="TL")
 
-    def validate_minimum_delivery_time(self) -> float | None:
+    def validate_minimum_delivery_time(self) -> float | str | None:
         if self.minimum_delivery_time and not isinstance(
             self.minimum_delivery_time, (float, int)
         ):
             raise ValueError("invalid minimum_delivery_time type expected.")
 
-        return float(self.minimum_delivery_time)
+        return str(self.minimum_delivery_time)
 
     def validate_original_delivery_fee(self) -> Price | None:
         if self.original_delivery_fee and not isinstance(

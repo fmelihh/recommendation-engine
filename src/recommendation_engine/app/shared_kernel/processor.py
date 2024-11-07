@@ -1,4 +1,6 @@
+import time
 import json
+import random
 
 import requests
 from tenacity import (
@@ -64,9 +66,11 @@ class Processor(ABC):
                 method=sync_call_params.method,
                 headers=sync_call_params.headers,
             )
+            response.raise_for_status()
             logger.info(
                 f"Sync call method was successfully completed. Requested url is: {sync_call_params.url}"
             )
+            time.sleep(random.randint(10, 30))
             return response
         except Exception as e:
             logger.exception(str(e))
