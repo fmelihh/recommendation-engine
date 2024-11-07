@@ -169,10 +169,16 @@ class YemeksepetiRestaurants(BaseEntity, Processor):
     def process(
         self, process_limit: int | None = None
     ) -> list[YemeksepetiRestaurantValue]:
+        restaurant_slug_hashset = set()
+
         for restaurant_list in self._iterate_over_restaurants():
             for restaurant in restaurant_list:
                 restaurant = self.transform_unstructured_data(restaurant)
+                if restaurant.url_slug in restaurant_slug_hashset:
+                    return self.restaurant_stack.retrieve_values()
+
                 self.restaurant_stack.add_value(restaurant)
+                restaurant_slug_hashset.add(restaurant.url_slug)
 
             if (
                 process_limit is not None
