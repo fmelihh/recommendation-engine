@@ -7,14 +7,14 @@ from src.recommendation_engine.app.features.comments.dto.comment import (
 
 
 def test_yemeksepeti_comments():
-    yemek_sepeti_comments = YemekSepetiComments(restaurant_id="nrp4")
+    yemek_sepeti_comments = YemekSepetiComments(restaurant_id="pt76")
     results = yemek_sepeti_comments.process(process_limit=1)
     assert isinstance(results, list)
     assert len(results) > 0
 
 
 def test_getir_comments_with_dto():
-    yemek_sepeti_comments = YemekSepetiComments(restaurant_id="nrp4")
+    yemek_sepeti_comments = YemekSepetiComments(restaurant_id="pt76")
     results = yemek_sepeti_comments.process(process_limit=1)
     [
         CommentDto(

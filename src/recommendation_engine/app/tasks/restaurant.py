@@ -29,13 +29,14 @@ class RestaurantTask(Task):
                 )
 
                 restaurant_list = restaurant_extractor.crawl()
-                restaurant_service.parse_all_restaurants(
-                    provider=provider.value,
-                    restaurants=restaurant_list,
-                    lat=lat,
-                    lon=lon,
-                    city=city["name"].upper(),
-                )
+                if len(restaurant_list) > 0:
+                    restaurant_service.parse_all_restaurants(
+                        provider=provider.value,
+                        restaurants=restaurant_list,
+                        lat=lat,
+                        lon=lon,
+                        city=city["name"].upper(),
+                    )
 
 
 celery_application.register_task(RestaurantTask)

@@ -14,6 +14,9 @@ class CommentTask(Task):
 
     def run(self, *args, **kwargs):
         for provider in Providers:
+            if provider == Providers.GETIR:
+                continue
+
             counter = 0
             while True:
                 restaurants = RestaurantService.retrieve_restaurants_with_pagination(
@@ -23,17 +26,23 @@ class CommentTask(Task):
                     break
 
                 for restaurant in restaurants:
+                    comment_restaurant_id = (
+                        restaurant.restaurant_slug.split("-")[-1]
+                        if provider == Providers.YEMEK_SEPETI
+                        else restaurant.restaurant_id
+                    )
                     comment_service = CommentService()
                     comment_extractor = CommentsExtractorService(
-                        provider_type=provider, restaurant_id=restaurant.restaurant_id
+                        provider_type=provider, restaurant_id=comment_restaurant_id
                     )
 
                     comment_list = comment_extractor.crawl()
-                    comment_service.parse_all_comments(
-                        restaurant_id=restaurant.restaurant_id,
-                        provider=provider.value,
-                        comments=comment_list,
-                    )
+                    if len(comment_list) > 0:
+                        comment_service.parse_all_comments(
+                            restaurant_id=restaurant.restaurant_id,
+                            provider=provider.value,
+                            comments=comment_list,
+                        )
 
                 counter += 1
 
