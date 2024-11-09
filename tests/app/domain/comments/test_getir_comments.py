@@ -5,7 +5,7 @@ from src.recommendation_engine.app.features.comments.dto.comment import CommentD
 
 
 def test_getir_comments():
-    getir_comments = GetirComments(restaurant_id="60128f1082ce14c9bc57d68a")
+    getir_comments = GetirComments(restaurant_id="66c254ccf3692cd5130bf047")
     results = getir_comments.process(process_limit=1)
     assert isinstance(results, list)
     assert len(results) > 0

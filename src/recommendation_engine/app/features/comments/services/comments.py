@@ -13,6 +13,7 @@ class CommentService:
             session.bulk_save_objects(
                 [
                     CommentsModel(
+                        restaurant_id=restaurant_id,
                         provider=provider,
                         **comments[idx].model_dump(),
                         id=HashGenerator.generate_unique_hash(

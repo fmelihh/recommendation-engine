@@ -11,6 +11,7 @@ class CommentsModel(ClickhouseBase):
     __tablename__ = "comments"
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    restaurant_id = Column(String)
     provider = Column(String)
     rating = Column(Int32)
     comment = Column(String)
