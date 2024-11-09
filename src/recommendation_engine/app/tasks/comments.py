@@ -29,7 +29,11 @@ class CommentTask(Task):
                     )
 
                     comment_list = comment_extractor.crawl()
-                    comment_service.parse_all_comments(comment_list)
+                    comment_service.parse_all_comments(
+                        restaurant_id=restaurant.restaurant_id,
+                        provider=provider.value,
+                        comments=comment_list,
+                    )
 
                 counter += 1
 
