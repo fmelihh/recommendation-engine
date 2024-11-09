@@ -27,6 +27,7 @@ class CommentMapper:
     @staticmethod
     def getir_comment_to_dto(value_object: GetirCommentValue) -> CommentDto:
         # TODO: getir comment value date text to be updated.
+
         comment_dto = CommentDto(
             replies=(
                 []
