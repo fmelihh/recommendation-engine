@@ -11,6 +11,8 @@ class MenuService:
             session.bulk_save_objects(
                 [
                     MenuModel(
+                        restaurant_id=restaurant_id,
+                        provider=provider,
                         id=HashGenerator.generate_unique_hash(
                             [
                                 provider,
