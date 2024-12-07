@@ -10,13 +10,6 @@ class MenuTask(Task):
     __name__ = "MenuTask"
 
     def run(self, *args, **kwargs):
-        menu_service = MenuService()
-        menu_extractor = MenuExtractorService(**kwargs)
-
-        restaurant_list = menu_extractor.crawl()
-        menu_service.parse_all_menus(restaurant_list)
-
-    def run(self, *args, **kwargs):
         for provider in Providers:
             counter = 0
             while True:
@@ -28,28 +21,18 @@ class MenuTask(Task):
 
                 for restaurant in restaurants:
                     menu_service = MenuService()
-                    menu_extractor = MenuExtractorService(**kwargs)
-
-                    restaurant_list = menu_extractor.crawl()
-                    menu_service.parse_all_menus(restaurant_list)
-
-                    comment_restaurant_id = (
-                        restaurant.restaurant_slug.split("-")[-1]
-                        if provider == Providers.YEMEK_SEPETI
-                        else restaurant.restaurant_id
-                    )
-                    comment_service = CommentService()
-                    comment_extractor = CommentsExtractorService(
-                        provider_type=provider, restaurant_id=comment_restaurant_id
+                    menu_extractor = MenuExtractorService(
+                        provider_type=provider.value,
+                        lat=restaurant.lat,
+                        lon=restaurant.lon,
+                        restaurant_slug=restaurant.restaurant_slug,
+                        restaurant_id=restaurant.restaurant_id,
                     )
 
-                    comment_list = comment_extractor.crawl()
-                    if len(comment_list) > 0:
-                        comment_service.parse_all_comments(
-                            restaurant_id=restaurant.restaurant_id,
-                            provider=provider.value,
-                            comments=comment_list,
-                        )
+                    menu_list = menu_extractor.crawl()
+
+                    if len(menu_list) > 0:
+                        menu_service.parse_all_menus(menu_list)
 
                 counter += 1
 
