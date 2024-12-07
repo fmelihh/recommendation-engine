@@ -1,10 +1,8 @@
-from addict import Dict
 from typing import List, Callable
 
-from ..domain.values import GeoValue
-from ..domain.values.menu import MenuValue
-from ..domain.entity.getir import GetirMenu
 from ..dto.menu import MenuDto
+from ..domain.values import GeoValue
+from ..domain.entity.getir import GetirMenu
 from ..mappers.menu import MenuMapper
 from ....shared_kernel.extractor import Extractor
 from ..domain.entity.yemeksepeti import YemeksepetiMenu
@@ -12,8 +10,19 @@ from ....shared_kernel.domain_providers import Providers
 
 
 class MenuExtractorService(Extractor):
-    def __init__(self, provider_type: Providers, **kwargs):
-        self.kwargs = Dict(**kwargs)
+    def __init__(
+        self,
+        provider_type: Providers,
+        lat: float | None = None,
+        lon: float | None = None,
+        restaurant_slug: str | None = None,
+        restaurant_id: str | None = None,
+    ):
+        self.lat = lat
+        self.lon = lon
+        self.restaurant_id = restaurant_id
+        self.restaurant_slug = restaurant_slug
+
         self.provider = self.initialize_provider(provider_type)
         self.mapper_function = self.initialize_mapper_function(provider_type)
 
@@ -29,12 +38,12 @@ class MenuExtractorService(Extractor):
         self, provider_type: Providers
     ) -> YemeksepetiMenu | GetirMenu:
         if provider_type == Providers.YEMEK_SEPETI:
-            geo_value = GeoValue(lat=self.kwargs.lat, lon=self.kwargs.lon)
+            geo_value = GeoValue(lat=self.lat, lon=self.lon)
             return YemeksepetiMenu(
-                geo_value=geo_value, restaurant_id=self.kwargs.restaurant_id
+                geo_value=geo_value, restaurant_id=self.restaurant_id
             )
         elif provider_type == Providers.GETIR:
-            return GetirMenu(restaurant_slug=self.kwargs.restaurant_slug)
+            return GetirMenu(restaurant_slug=self.restaurant_slug)
         else:
             raise ValueError("Provider is not defined.")
 
