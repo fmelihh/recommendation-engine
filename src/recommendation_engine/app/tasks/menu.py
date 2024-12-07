@@ -32,7 +32,11 @@ class MenuTask(Task):
                     menu_list = menu_extractor.crawl()
 
                     if len(menu_list) > 0:
-                        menu_service.parse_all_menus(menu_list)
+                        menu_service.parse_all_menus(
+                            restaurant_id=restaurant.restaurant_id,
+                            provider=provider.value,
+                            menus=menu_list,
+                        )
 
                 counter += 1
 
