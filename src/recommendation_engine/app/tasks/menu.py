@@ -12,6 +12,9 @@ class MenuTask(Task):
 
     def run(self, *args, **kwargs):
         for provider in Providers:
+            if provider == Providers.GETIR:
+                continue
+
             counter = 0
             while True:
                 restaurants = RestaurantService.retrieve_restaurants_with_pagination(

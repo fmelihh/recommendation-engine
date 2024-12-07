@@ -10,6 +10,8 @@ from ....shared_kernel.database.clickhouse import ClickhouseBase
 class MenuModel(ClickhouseBase):
     __tablename__ = "menu"
 
+    provider = Column(String)
+    restaurant_id = Column(String)
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     category = Column(Nullable(String))
     product_id = Column(Nullable(String))
