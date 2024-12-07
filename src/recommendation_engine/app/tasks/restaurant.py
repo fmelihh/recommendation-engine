@@ -15,7 +15,9 @@ class RestaurantTask(Task):
     __name__ = "RestaurantTask"
 
     def run(self, *args, **kwargs):
-        cities = json.load(open(f"{os.getcwd()}/static/cities.json", "r"))
+        cities = json.load(
+            open(f"{os.getcwd()}/static/{os.getenv('CITIES_JSON')}", "r")
+        )
 
         for city in cities:
             for provider in Providers:
