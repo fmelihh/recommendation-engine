@@ -1,4 +1,5 @@
 from celery.app.task import Task
+from celery.schedules import crontab
 
 from ..shared_kernel.domain_providers import Providers
 from ..features.restaurants.services import RestaurantService
@@ -42,3 +43,9 @@ class MenuTask(Task):
 
 
 celery_application.register_task(MenuTask)
+
+celery_application.conf.beat_schedule[str(MenuTask.__name__)] = {
+    "task": str(MenuTask.__module__),
+    "schedule": crontab(hour="12", minute="30"),
+    "options": {"queue": "periodic"},
+}

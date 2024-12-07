@@ -1,4 +1,5 @@
 from celery.app.task import Task
+from celery.schedules import crontab
 
 from ..shared_kernel.scheduler.celery_app import celery_application
 from ..features.comments.services import (
@@ -45,3 +46,10 @@ class CommentTask(Task):
 
 
 celery_application.register_task(CommentTask)
+
+
+celery_application.conf.beat_schedule[str(CommentTask.__name__)] = {
+    "task": str(CommentTask.__module__),
+    "schedule": crontab(hour="12", minute="30"),
+    "options": {"queue": "periodic"},
+}
