@@ -1,4 +1,4 @@
-from ..db.models import RestaurantModel
+from ..db import RestaurantModel
 from ..dto.restaurants import RestaurantDto
 from ....shared_kernel.database.clickhouse import get_session
 from ....shared_kernel.generator import HashGenerator
