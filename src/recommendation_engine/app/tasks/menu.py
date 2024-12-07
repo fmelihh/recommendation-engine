@@ -23,7 +23,7 @@ class MenuTask(Task):
                 for restaurant in restaurants:
                     menu_service = MenuService()
                     menu_extractor = MenuExtractorService(
-                        provider_type=provider.value,
+                        provider_type=provider,
                         lat=restaurant.lat,
                         lon=restaurant.lon,
                         restaurant_slug=restaurant.restaurant_slug,
