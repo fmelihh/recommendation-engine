@@ -3,11 +3,11 @@ from typing import TypeVar, List, Callable
 
 from .entity import BaseEntity
 from .domain_providers import Providers
-from ..features.menu.domain.values import MenuValue
+from ..features.menu.dto.menu import MenuDto
 from ..features.comments.dto.comment import CommentDto
 from ..features.restaurants.dto.restaurants import RestaurantDto
 
-T = TypeVar("T", *[List[RestaurantDto], List[CommentDto], List[MenuValue]])
+T = TypeVar("T", *[List[RestaurantDto], List[CommentDto], List[MenuDto]])
 
 
 class Extractor(ABC):
