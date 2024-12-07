@@ -1,0 +1,1 @@
+from .getir import GetirRestaurants
