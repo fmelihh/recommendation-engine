@@ -15,4 +15,4 @@ class RestaurantDto(BaseModel):
     order_amount_currency: str | None = Field(default=None)
     loyalty_percentage_amount: float | None = Field(default=None)
     lat: float | None = Field(default=None)
-    long: float | None = Field(default=None)
+    lon: float | None = Field(default=None)
