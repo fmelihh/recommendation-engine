@@ -24,7 +24,11 @@ class MenuMapper:
             product_id=value_object.product_id,
             name=value_object.name,
             description=value_object.description,
-            image_url=value_object.image_url,
+            image_url=(
+                value_object.image_url
+                if value_object.image_url
+                else value_object.full_screen_image_url
+            ),
             price=value_object.price.amount,
             price_currency=value_object.price.currency,
         )
