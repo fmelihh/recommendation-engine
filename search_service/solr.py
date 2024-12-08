@@ -39,7 +39,7 @@ class SolrQuery:
                    
                    name: ({text}~2)^0.75 OR
                    provider: ({text}~2)^0.5 OR
-                   city: ({text}~2)^0.1 OR
+                   city: ({text}~2)^0.1
                 """,
             },
         )
