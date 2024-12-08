@@ -8,9 +8,9 @@ app = FastAPI()
 
 
 @app.get("/search-restaurant")
-def search_restaurant(
+async def search_restaurant(
     text: str, page: int = 0, total_page: int = 10
-) -> list[dict[str, Any]]:
+) -> dict[str, Any]:
     return SearchService().search_restaurant(
         text=text, page=page, total_page=total_page
     )

@@ -25,13 +25,21 @@ class SolrQuery:
             rows=total_page,
             defType="dismax",
             fl="*, score",
-            bf="mul(rating,0.5)",
+            # bf="mul(rating,0.5)",
             sort="score desc",
             **{
                 "q.alt": f"""
                    name: {text}^5 OR
                    provider: {text}^2 OR
                    city: {text}^1 OR
+                   
+                   name: ({text}~1)^1.5 OR
+                   provider: ({text}~1)^1 OR
+                   city: ({text}~1)^0.5 OR
+                   
+                   name: ({text}~2)^0.75 OR
+                   provider: ({text}~2)^0.5 OR
+                   city: ({text}~2)^0.1 OR
                 """,
             },
         )
