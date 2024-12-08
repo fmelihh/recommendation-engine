@@ -30,9 +30,12 @@ class SearchService:
 
         buffer.close()
 
-
-    def search_restaurant(self):
-        pass
+    def search_restaurant(self, text: str, page: int, total_page: int):
+        return self.solr_query.search(
+            text=text,
+            page=page,
+            total_page=total_page,
+        )
 
     def data_upload(self, content: bytes, content_type: str):
         for chunk_df in self._convert_bytes_to_dataframe(

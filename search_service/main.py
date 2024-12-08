@@ -1,4 +1,5 @@
 import uvicorn
+from typing import Any
 from fastapi import FastAPI, UploadFile, File
 
 from service import SearchService
@@ -7,8 +8,12 @@ app = FastAPI()
 
 
 @app.get("/search-restaurant")
-def search_restaurant(text: str, page: int = 0, total_page: int = 10):
-    pass
+def search_restaurant(
+    text: str, page: int = 0, total_page: int = 10
+) -> list[dict[str, Any]]:
+    return SearchService().search_restaurant(
+        text=text, page=page, total_page=total_page
+    )
 
 
 @app.post("/restaurant-upload")
