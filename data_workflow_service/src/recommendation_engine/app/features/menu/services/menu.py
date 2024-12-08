@@ -20,7 +20,7 @@ class MenuService:
                                 menus[idx].product_id,
                             ]
                         ),
-                        **menus[idx].model_dump()
+                        **menus[idx].model_dump(exclude_none=True)
                     )
                     for idx in range(len(menus))
                 ]

@@ -15,7 +15,7 @@ class CommentService:
                     CommentsModel(
                         restaurant_id=restaurant_id,
                         provider=provider,
-                        **comments[idx].model_dump(),
+                        **comments[idx].model_dump(exclude_none=True),
                         id=HashGenerator.generate_unique_hash(
                             [
                                 provider,

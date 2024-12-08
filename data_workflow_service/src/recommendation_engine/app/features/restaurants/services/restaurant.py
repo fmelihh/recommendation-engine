@@ -21,7 +21,7 @@ class RestaurantService:
                         lon=lon,
                         city=city,
                         provider=provider,
-                        **restaurants[idx].model_dump(),
+                        **restaurants[idx].model_dump(exclude_none=True),
                         id=HashGenerator.generate_unique_hash(
                             [
                                 provider,

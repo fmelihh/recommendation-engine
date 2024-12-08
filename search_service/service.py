@@ -1,5 +1,5 @@
-from typing import Literal
 from solr import SolrQuery
+from typing import Literal, Any
 
 
 class SearchService:
@@ -14,4 +14,7 @@ class SearchService:
         return self._solr_query
 
     def search_restaurant(self):
+        pass
+
+    def data_upload(self, data: dict[str, Any]):
         pass
