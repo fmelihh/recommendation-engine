@@ -11,7 +11,7 @@ def search_restaurant(text: str, page: int = 0, total_page: int = 10):
     pass
 
 
-@app.get("restaurant-upload")
+@app.post("/restaurant-upload")
 async def restaurant_upload(file: UploadFile = File(...)):
     content = await file.read()
     SearchService().data_upload(content, file.content_type)

@@ -10,7 +10,6 @@ class SolrQuery:
         self._client.ping()
 
     def data_upload(self, data: list[dict[str, Any]]):
-        for record in data:
-            self._client.add(record)
-
+        self._client.add(data)
         self._client.commit()
+        self._client.optimize()

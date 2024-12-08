@@ -1,4 +1,5 @@
 import io
+import numpy as np
 import pandas as pd
 from typing import Generator
 from solr import SolrQuery
@@ -23,10 +24,12 @@ class SearchService:
 
         buffer = io.BytesIO(content)
         df = pd.read_csv(buffer, chunksize=300, sep=",", index_col=0)
-        buffer.close()
 
         for chunk_df in df:
-            yield chunk_df
+            yield chunk_df.replace({np.nan: None})
+
+        buffer.close()
+
 
     def search_restaurant(self):
         pass
