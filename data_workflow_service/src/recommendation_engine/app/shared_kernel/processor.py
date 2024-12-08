@@ -70,7 +70,7 @@ class Processor(ABC):
             logger.info(
                 f"Sync call method was successfully completed. Requested url is: {sync_call_params.url}"
             )
-            time.sleep(random.randint(10, 30))
+            time.sleep(random.randint(5, 10))
             return response
         except Exception as e:
             logger.exception(str(e))
