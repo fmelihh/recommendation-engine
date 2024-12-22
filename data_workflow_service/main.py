@@ -3,7 +3,6 @@ import dotenv
 import uvicorn
 import inspect
 from loguru import logger
-from fastapi import FastAPI
 from sqlalchemy import inspect as sqlalchemy_inspect
 
 
@@ -32,8 +31,8 @@ from src.recommendation_engine.app.shared_kernel.database.clickhouse import (
 # noinspection PyUnresolvedReferences
 from src.recommendation_engine.app import *
 
-
-app = FastAPI()
+# noinspection PyUnresolvedReferences
+from src.recommendation_engine.app.shared_kernel.api import *
 
 
 def create_tables():
@@ -47,11 +46,6 @@ def create_tables():
                     logger.info(f"{name} Clickhouse Table Created.")
                 else:
                     logger.info(f"{name} Clickhouse Table Already Exists.")
-
-
-@app.get("/")
-def hello_world():
-    return "hello world"
 
 
 if __name__ == "__main__":
