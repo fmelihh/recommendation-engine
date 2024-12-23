@@ -12,9 +12,8 @@ from ....shared_kernel.database.clickhouse import get_session
 class AggregateDomainsService:
     @staticmethod
     def retrieve_aggregate_data_detail(restaurant_id: str):
-        query = AggregateDomainsService.generate_aggregate_data_query()
-        query = query.where(
-            sa.column("restaurant_id") == restaurant_id
+        query = AggregateDomainsService.generate_aggregate_data_query(
+            conditions=[sa.literal_column("restaurants.restaurant_id") == restaurant_id]
         )
 
         with get_session() as session:
@@ -28,7 +27,6 @@ class AggregateDomainsService:
             data = AggregateDomainsService.format_data(res)
             if len(data) > 0:
                 return data[0]
-
 
     @staticmethod
     def retrieve_aggregate_data(
@@ -48,9 +46,8 @@ class AggregateDomainsService:
             data = AggregateDomainsService.format_data(res)
             return data
 
-
     @staticmethod
-    def generate_aggregate_data_query() -> sa.Select:
+    def generate_aggregate_data_query(conditions: list | None = None) -> sa.Select:
         comments = (
             sa.select(
                 sa.column("restaurant_id"),
@@ -101,8 +98,9 @@ class AggregateDomainsService:
                 isouter=True,
             )
         )
+        if conditions:
+            query = query.where(sa.and_(*conditions))
         return query
-
 
     @staticmethod
     def format_data(res: pd.DataFrame) -> list[dict[str, Any]]:
@@ -118,4 +116,3 @@ class AggregateDomainsService:
                     row[row_key] = list(set(row[row_key]))
 
         return data
-
