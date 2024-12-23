@@ -11,9 +11,46 @@ from ....shared_kernel.database.clickhouse import get_session
 
 class AggregateDomainsService:
     @staticmethod
+    def retrieve_aggregate_data_detail(restaurant_id: str):
+        query = AggregateDomainsService.generate_aggregate_data_query()
+        query = query.where(
+            sa.column("restaurant_id") == restaurant_id
+        )
+
+        with get_session() as session:
+            column_names = [col.name for col in query.columns]
+            compiled_cte = query.compile(compile_kwargs={"literal_binds": True})
+            res = pd.DataFrame(
+                columns=column_names,
+                data=session.execute(sa.text(str(compiled_cte))).all(),
+            )
+
+            data = AggregateDomainsService.format_data(res)
+            if len(data) > 0:
+                return data[0]
+
+
+    @staticmethod
     def retrieve_aggregate_data(
         page: int = 1, page_size: int = 10
     ) -> list[dict[str, Any]]:
+        query = AggregateDomainsService.generate_aggregate_data_query()
+        query = query.limit(page_size).offset((page - 1) * page_size)
+
+        with get_session() as session:
+            column_names = [col.name for col in query.columns]
+            compiled_cte = query.compile(compile_kwargs={"literal_binds": True})
+            res = pd.DataFrame(
+                columns=column_names,
+                data=session.execute(sa.text(str(compiled_cte))).all(),
+            )
+
+            data = AggregateDomainsService.format_data(res)
+            return data
+
+
+    @staticmethod
+    def generate_aggregate_data_query() -> sa.Select:
         comments = (
             sa.select(
                 sa.column("restaurant_id"),
@@ -63,27 +100,22 @@ class AggregateDomainsService:
                 menu.c.restaurant_id == restaurants.c.restaurant_id,
                 isouter=True,
             )
-            .limit(page_size)
-            .offset((page - 1) * page_size)
         )
+        return query
 
-        with get_session() as session:
-            column_names = [col.name for col in query.columns]
-            compiled_cte = query.compile(compile_kwargs={"literal_binds": True})
-            res = pd.DataFrame(
-                columns=column_names,
-                data=session.execute(sa.text(str(compiled_cte))).all(),
-            )
 
-            res.columns = [col.split(".")[-1] for col in res.columns]
-            for col in res.columns:
-                if "%" in col:
-                    del res[col]
+    @staticmethod
+    def format_data(res: pd.DataFrame) -> list[dict[str, Any]]:
+        res.columns = [col.split(".")[-1] for col in res.columns]
+        for col in res.columns:
+            if "%" in col:
+                del res[col]
 
-            data = res.to_dict(orient="records")
-            for row in data:
-                for row_key in row:
-                    if isinstance(row[row_key], list):
-                        row[row_key] = list(set(row[row_key]))
+        data = res.to_dict(orient="records")
+        for row in data:
+            for row_key in row:
+                if isinstance(row[row_key], list):
+                    row[row_key] = list(set(row[row_key]))
 
-            return data
+        return data
+
