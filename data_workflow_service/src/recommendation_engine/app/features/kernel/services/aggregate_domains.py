@@ -18,7 +18,7 @@ class AggregateDomainsService:
             sa.select(
                 sa.column("restaurant_id"),
                 sa.func.groupArray(sa.column("comment")).label("comments"),
-                sa.func.avg(sa.column("rating")).label("comment_rating"),
+                sa.func.avg(sa.column("rating")).label("comment_avg_rating"),
             )
             .select_from(CommentsModel.__table__)
             .group_by(sa.column("restaurant_id"))
@@ -51,7 +51,7 @@ class AggregateDomainsService:
         ).cte("restaurants")
 
         query = (
-            select(sa.column("*"))
+            select(restaurants.c, comments.c, menu.c)
             .select_from(restaurants)
             .join(
                 comments,
@@ -59,7 +59,9 @@ class AggregateDomainsService:
                 isouter=True,
             )
             .join(
-                menu, menu.c.restaurant_id == restaurants.c.restaurant_id, isouter=True
+                menu,
+                menu.c.restaurant_id == restaurants.c.restaurant_id,
+                isouter=True,
             )
             .limit(page_size)
             .offset((page - 1) * page_size)
@@ -69,9 +71,19 @@ class AggregateDomainsService:
             column_names = [col.name for col in query.columns]
             compiled_cte = query.compile(compile_kwargs={"literal_binds": True})
             res = pd.DataFrame(
-                columns=column_names, data=session.execute(sa.text(compiled_cte))
+                columns=column_names,
+                data=session.execute(sa.text(str(compiled_cte))).all(),
             )
 
-        res.columns = [col.split(".")[-1] for col in res.columns]
+            res.columns = [col.split(".")[-1] for col in res.columns]
+            for col in res.columns:
+                if "%" in col:
+                    del res[col]
 
-        return res.to_dict(orient="records")
+            data = res.to_dict(orient="records")
+            for row in data:
+                for row_key in row:
+                    if isinstance(row[row_key], list):
+                        row[row_key] = list(set(row[row_key]))
+
+            return data
