@@ -7,6 +7,9 @@ class SolrSchema(AbstractSolr):
     def __init__(self):
         super().__init__()
 
+    def execute(self):
+        payload = [self.fuzzy_search_field_type(), self.search_fields()]
+
     @staticmethod
     def fuzzy_search_field_type() -> dict[str, Any]:
         return {
