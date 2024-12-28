@@ -11,6 +11,7 @@ fastapi = {version = "^0.115.6", extras = ["all"]}
 pysolr = "^3.10.0"
 uvicorn = "^0.32.1"
 pandas = "^2.2.3"
+tenacity = "^9.0.0"
 
 
 [build-system]
