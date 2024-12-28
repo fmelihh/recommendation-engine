@@ -32,7 +32,7 @@ class UploadService(SyncRequestMixin):
             self._solr_schema = SolrSchema()
         return self._solr_schema
 
-    def fetch_data(self) -> Generator[dict[str, Any], None, None]:
+    def fetch_data(self) -> Generator[list[dict[str, Any]], None, None]:
         page = 1
         while True:
             response = self.synchronized_call(
