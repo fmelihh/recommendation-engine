@@ -1,11 +1,15 @@
 import pysolr
 from abc import ABC
+from typing import Any, Generator
+
+from ..utils.request_mixin import SyncRequestMixin, SyncCallParams
 
 
-class AbstractSolr(ABC):
+class AbstractSolr(ABC, SyncRequestMixin):
     def __init__(self):
         self._client = None
         self._solr_url = None
+        super().__init__()
 
     @property
     def solr_client(self) -> pysolr.Solr:
@@ -19,3 +23,34 @@ class AbstractSolr(ABC):
         if self._solr_url is None:
             self._solr_url = "http://localhost:8983/solr/recommendation-engine"
         return self._solr_url
+
+    def _add_data(self, data: list[dict[str, Any]]):
+        batch_size = 500
+        for i in range(0, len(data), batch_size):
+            self.solr_client.add(data[i : i + batch_size])
+        self.solr_client.commit()
+
+    def _retrieve_all_data(self, start: int, rows: int) -> list[dict[str, Any]]:
+        records = self.solr_client.search(q="*:*", rows=rows, start=start)
+        return list(records)
+
+    def _delete_data(self, query: str = "*:*"):
+        self.synchronized_call(
+            sync_call_params=SyncCallParams(
+                url=f"{self.solr_url}/update?commit=true",
+                body=f'{{"delete": {{"query": {query}]}}}}',
+                method="POST",
+            )
+        )
+
+    def _reindex_data(self):
+        start = 0
+        rows = 10000
+        all_data = []
+        while records := self._retrieve_all_data(start=start, rows=rows):
+            all_data.extend(records)
+            start += rows
+
+        self._delete_data()
+        self.solr_client.commit()
+        self.solr_client.optimize()

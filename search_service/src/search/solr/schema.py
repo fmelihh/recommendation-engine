@@ -1,10 +1,10 @@
 from typing import Any
 
 from .base import AbstractSolr
-from ..utils.request_mixin import SyncRequestMixin, SyncCallParams
+from ..utils.request_mixin import SyncCallParams
 
 
-class SolrSchema(AbstractSolr, SyncRequestMixin):
+class SolrSchema(AbstractSolr):
     def __init__(self):
         super().__init__()
 
@@ -12,7 +12,7 @@ class SolrSchema(AbstractSolr, SyncRequestMixin):
         payload = [self.fuzzy_search_field_type(), self.search_fields()]
         response = self.synchronized_call(
             sync_call_params=SyncCallParams(
-                url=self.solr_url, body=payload, method="POST"
+                url=f"{self.solr_url}/schema", body=payload, method="POST"
             )
         )
 
