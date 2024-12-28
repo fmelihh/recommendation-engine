@@ -86,3 +86,7 @@ class SolrSchema(AbstractSolr):
                 )
 
         return {"add-field": payload_declarations}
+
+    # @staticmethod
+    # def all_in_one_field() -> dict[str, Any]:
+    #     pass

@@ -1,7 +1,8 @@
 import pysolr
 from abc import ABC
-from typing import Any, Generator
+from typing import Any
 
+from ..utils.constants import ConstantNamespace
 from ..utils.request_mixin import SyncRequestMixin, SyncCallParams
 
 
@@ -9,6 +10,8 @@ class AbstractSolr(ABC, SyncRequestMixin):
     def __init__(self):
         self._client = None
         self._solr_url = None
+        self._base_solr_url = None
+
         super().__init__()
 
     @property
@@ -21,7 +24,15 @@ class AbstractSolr(ABC, SyncRequestMixin):
     @property
     def solr_url(self) -> str:
         if self._solr_url is None:
-            self._solr_url = "http://localhost:8983/solr/recommendation-engine"
+            self._solr_url = (
+                f"{self.base_solr_url}/{ConstantNamespace.SOLR_COLLECTION_ALIAS}"
+            )
+        return self._solr_url
+
+    @property
+    def base_solr_url(self) -> str:
+        if self._base_solr_url is None:
+            self._solr_url = f"http://localhost:8983/solr"
         return self._solr_url
 
     def _add_data(self, data: list[dict[str, Any]]):
