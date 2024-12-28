@@ -1,0 +1,2 @@
+class SearchService:
+    pass
