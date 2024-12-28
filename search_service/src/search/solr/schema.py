@@ -1,14 +1,23 @@
 from typing import Any
 
 from .base import AbstractSolr
+from ..utils.request_mixin import SyncRequestMixin, SyncCallParams
 
 
-class SolrSchema(AbstractSolr):
+class SolrSchema(AbstractSolr, SyncRequestMixin):
     def __init__(self):
         super().__init__()
 
     def execute(self):
         payload = [self.fuzzy_search_field_type(), self.search_fields()]
+        response = self.synchronized_call(
+            sync_call_params=SyncCallParams(
+                url=self.solr_url, body=payload, method="POST"
+            )
+        )
+
+        response.raise_for_status()
+        print("schema creation successfully completed.")
 
     @staticmethod
     def fuzzy_search_field_type() -> dict[str, Any]:

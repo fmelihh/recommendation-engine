@@ -14,7 +14,7 @@ from pydantic import BaseModel, AnyUrl, field_validator, Field
 
 class SyncCallParams(BaseModel):
     url: AnyUrl
-    body: dict | str | None = Field(default=None)
+    body: dict | list | str | None = Field(default=None)
     params: dict | None = Field(default=None)
     headers: dict | None = Field(default=None)
     method: Literal["GET", "POST"] = Field(default="POST")
@@ -22,7 +22,7 @@ class SyncCallParams(BaseModel):
     @field_validator("body")
     @classmethod
     def validate_body(cls, v: dict | str | None) -> dict | str | None:
-        if isinstance(v, dict):
+        if isinstance(v, dict) or isinstance(v, list):
             v = json.dumps(v)
         return v
 
