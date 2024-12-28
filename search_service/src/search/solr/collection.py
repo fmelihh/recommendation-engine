@@ -1,10 +1,10 @@
 import datetime
-from .base import AbstractSolr
+from .base import AbstractSolr, AbstractExecutor
 from ..utils.constants import ConstantNamespace
 from ..utils.request_mixin import SyncCallParams
 
 
-class SolrCollection(AbstractSolr):
+class SolrCollection(AbstractSolr, AbstractExecutor):
     def __init__(self):
         super().__init__()
 

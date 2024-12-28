@@ -1,9 +1,15 @@
 import pysolr
-from abc import ABC
 from typing import Any
+from abc import ABC, abstractmethod
 
 from ..utils.constants import ConstantNamespace
 from ..utils.request_mixin import SyncRequestMixin, SyncCallParams
+
+
+class AbstractExecutor(ABC):
+    @abstractmethod
+    def execute(self):
+        pass
 
 
 class AbstractSolr(ABC, SyncRequestMixin):
@@ -35,17 +41,17 @@ class AbstractSolr(ABC, SyncRequestMixin):
             self._solr_url = f"http://localhost:8983/solr"
         return self._solr_url
 
-    def _add_data(self, data: list[dict[str, Any]]):
+    def add_data(self, data: list[dict[str, Any]]):
         batch_size = 500
         for i in range(0, len(data), batch_size):
             self.solr_client.add(data[i : i + batch_size])
         self.solr_client.commit()
 
-    def _retrieve_all_data(self, start: int, rows: int) -> list[dict[str, Any]]:
+    def retrieve_all_data(self, start: int, rows: int) -> list[dict[str, Any]]:
         records = self.solr_client.search(q="*:*", rows=rows, start=start)
         return list(records)
 
-    def _delete_data(self, query: str = "*:*"):
+    def delete_data(self, query: str = "*:*"):
         self.synchronized_call(
             sync_call_params=SyncCallParams(
                 url=f"{self.solr_url}/update?commit=true",
@@ -54,14 +60,14 @@ class AbstractSolr(ABC, SyncRequestMixin):
             )
         )
 
-    def _reindex_data(self):
+    def reindex_data(self):
         start = 0
         rows = 10000
         all_data = []
-        while records := self._retrieve_all_data(start=start, rows=rows):
+        while records := self.retrieve_all_data(start=start, rows=rows):
             all_data.extend(records)
             start += rows
 
-        self._delete_data()
+        self.delete_data()
         self.solr_client.commit()
         self.solr_client.optimize()

@@ -1,10 +1,10 @@
 from typing import Any
 
-from .base import AbstractSolr
+from .base import AbstractSolr, AbstractExecutor
 from ..utils.request_mixin import SyncCallParams
 
 
-class SolrSchema(AbstractSolr):
+class SolrSchema(AbstractSolr, AbstractExecutor):
     def __init__(self):
         super().__init__()
 
