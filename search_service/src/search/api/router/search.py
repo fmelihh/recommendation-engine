@@ -6,7 +6,10 @@ from ...services.search import SearchService
 search_router = APIRouter()
 
 
-@search_router.get("/search")
-def search(search_dto: SearchDto = Depends()):
+@search_router.get("/search_text")
+async def search(search_dto: SearchDto = Depends()):
     service = SearchService()
-    return service.search(search_dto=search_dto)
+    results = service.search(search_dto=search_dto)
+    return {
+        "results": results
+    }

@@ -6,13 +6,14 @@ authors = ["Furkan Melih Ercan <furkan.ercan@b2metric.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
-fastapi = {version = "^0.115.6", extras = ["all"]}
+python = "^3.11.8"
 pysolr = "^3.10.0"
-uvicorn = "^0.32.1"
+uvicorn = "^0.34.0"
 pandas = "^2.2.3"
 tenacity = "^9.0.0"
 celery = "^5.4.0"
+fastapi = {version = "^0.115.6", extras = ["all"]}
+asyncio = "^3.4.3"
 
 
 [build-system]

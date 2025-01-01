@@ -33,6 +33,7 @@ class AbstractSolr(ABC, SyncRequestMixin):
             self._solr_url = (
                 f"{self.base_solr_url}/{ConstantNamespace.SOLR_COLLECTION_ALIAS}"
             )
+        print(self._solr_url)
         return self._solr_url
 
     @property

@@ -48,4 +48,4 @@ class SolrQuery(AbstractSolr):
             },
         )
 
-        return result
+        return list(result.docs)
