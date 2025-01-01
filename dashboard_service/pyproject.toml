@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "dashboard-service"
+version = "0.1.0"
+description = ""
+authors = ["Furkan Melih Ercan <furkan.ercan@b2metric.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+dash = "^2.18.2"
+pandas = "^2.2.3"
+plotly = "^5.24.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
