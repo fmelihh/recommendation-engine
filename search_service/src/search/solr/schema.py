@@ -19,6 +19,7 @@ class SolrSchema(AbstractSolr, AbstractExecutor):
                 url=f"{self.solr_url}/schema",
                 body=payload,
                 method="POST",
+                headers={"Content-Type": "application/json"},
                 params={"commit": "false"},
             )
         )
