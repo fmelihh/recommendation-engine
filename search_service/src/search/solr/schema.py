@@ -54,7 +54,7 @@ class SolrSchema(AbstractSolr, AbstractExecutor):
             "product_description",
         ]
 
-        str_fields = ["restaurant_id"]
+        str_fields = ["restaurant_id", "lat", "lon"]
         fuzzy_fields = [
             "provider",
             "restaurant_name",
@@ -65,7 +65,7 @@ class SolrSchema(AbstractSolr, AbstractExecutor):
             "product_description",
         ]
         int_fields = ["review_number"]
-        float_fields = ["restaurant_rate", "lat", "lon", "comment_avg_rating"]
+        float_fields = ["restaurant_rate", "comment_avg_rating"]
 
         payload_declarations = []
         for str_field in str_fields:
