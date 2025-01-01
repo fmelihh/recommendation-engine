@@ -13,23 +13,23 @@ class SolrCollection(AbstractSolr, AbstractExecutor):
         self._bind_collection_with_alias(new_collection_name)
 
     def _create_collection(self) -> str:
-        new_collection_name = f"{ConstantNamespace.SOLR_COLLECTION_ALIAS}_{datetime.datetime.now().timestamp()}"
-        response = self.synchronized_call(
+        new_collection_name = f"{ConstantNamespace.SOLR_COLLECTION_ALIAS}_{int(datetime.datetime.now().timestamp())}"
+        self.synchronized_call(
             sync_call_params=SyncCallParams(
                 url=f"{self.base_solr_url}/admin/collections",
                 params={
                     "action": "CREATE",
                     "name": new_collection_name,
                     "collection.configName": "_default",
+                    "numShards": 1
                 },
                 method="POST",
             )
         )
-        response.raise_for_status()
         return new_collection_name
 
     def _bind_collection_with_alias(self, collection_name: str):
-        response = self.synchronized_call(
+        self.synchronized_call(
             sync_call_params=SyncCallParams(
                 url=f"{self.base_solr_url}/admin/collections",
                 params={
@@ -40,4 +40,3 @@ class SolrCollection(AbstractSolr, AbstractExecutor):
                 method="POST",
             )
         )
-        response.raise_for_status()

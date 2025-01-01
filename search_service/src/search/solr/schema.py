@@ -10,13 +10,12 @@ class SolrSchema(AbstractSolr, AbstractExecutor):
 
     def execute(self):
         payload = [self.fuzzy_search_field_type(), self.search_fields()]
-        response = self.synchronized_call(
+        self.synchronized_call(
             sync_call_params=SyncCallParams(
                 url=f"{self.solr_url}/schema", body=payload, method="POST"
             )
         )
 
-        response.raise_for_status()
         print("schema creation successfully completed.")
 
     @staticmethod
@@ -63,11 +62,7 @@ class SolrSchema(AbstractSolr, AbstractExecutor):
             payload_declarations.append(
                 {"name": str_field, "type": "string", "multiValued": False}
             )
-        for int_field in int_fields:
-            payload_declarations.append(
-                {"name": int_field, "type": "int", "multiValued": False}
-            )
-        for float_field in float_fields:
+        for float_field in [*float_fields, *int_fields]:
             payload_declarations.append(
                 {"name": float_field, "type": "plongs", "multiValued": False}
             )

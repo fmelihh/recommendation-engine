@@ -42,7 +42,11 @@ class SyncRequestMixin:
                 method=sync_call_params.method,
                 headers=sync_call_params.headers,
             )
-            response.raise_for_status()
+            if 299 < response.status_code or response.status_code < 200:
+                raise Exception(
+                    f"An error occurred when requesting {sync_call_params.url}, status code {response.status_code}, details {response.text}"
+                )
+
             print(
                 f"Sync call method was successfully completed. Requested url is: {sync_call_params.url}"
             )
