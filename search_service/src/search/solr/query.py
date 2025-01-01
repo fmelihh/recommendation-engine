@@ -38,7 +38,7 @@ class SolrQuery(AbstractSolr):
             rows=page_size,
             defType="dismax",
             fl="*, score",
-            bf="sum(mul(restaurant_rate,0.5),mul(review_number,0.3),mul(comment_avg_rating,0.5))",
+            bf="sum(mul(scale(restaurant_rate,1,20),0.5),mul(scale(review_number,1,20),0.3),mul(scale(comment_avg_rating,1,20),0.5))",
             sort="score desc",
             **{
                 "q.alt": query.format(
