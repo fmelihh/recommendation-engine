@@ -21,7 +21,7 @@ class SolrCollection(AbstractSolr, AbstractExecutor):
                     "action": "CREATE",
                     "name": new_collection_name,
                     "collection.configName": "_default",
-                    "numShards": 1
+                    "numShards": 1,
                 },
                 method="POST",
             )

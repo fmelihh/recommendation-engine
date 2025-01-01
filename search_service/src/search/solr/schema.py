@@ -1,3 +1,4 @@
+import json
 from typing import Any
 
 from .base import AbstractSolr, AbstractExecutor
@@ -9,10 +10,16 @@ class SolrSchema(AbstractSolr, AbstractExecutor):
         super().__init__()
 
     def execute(self):
-        payload = [self.fuzzy_search_field_type(), self.search_fields()]
+        payload = dict()
+        payload.update(self.fuzzy_search_field_type())
+        payload.update(self.search_fields())
+
         self.synchronized_call(
             sync_call_params=SyncCallParams(
-                url=f"{self.solr_url}/schema", body=payload, method="POST"
+                url=f"{self.solr_url}/schema",
+                body=payload,
+                method="POST",
+                params={"commit": "false"},
             )
         )
 
@@ -21,18 +28,20 @@ class SolrSchema(AbstractSolr, AbstractExecutor):
     @staticmethod
     def fuzzy_search_field_type() -> dict[str, Any]:
         return {
-            "add-field-type": {
-                "name": "fuzzyFieldType",
-                "class": "solr.TextField",
-                "analyzer": {
-                    "tokenizer": {"name": "whitespace"},
-                    "filters": [
-                        {"name": "lowercase"},
-                        {"name": "classic"},
-                        {"name": "nGram", "minGramSize": "3", "maxGramSize": "5"},
-                    ],
-                },
-            }
+            "add-field-type": [
+                {
+                    "name": "fuzzyFieldType",
+                    "class": "solr.TextField",
+                    "analyzer": {
+                        "tokenizer": {"name": "whitespace"},
+                        "filters": [
+                            {"name": "lowercase"},
+                            {"name": "classic"},
+                            {"name": "nGram", "minGramSize": "3", "maxGramSize": "5"},
+                        ],
+                    },
+                }
+            ]
         }
 
     @staticmethod
