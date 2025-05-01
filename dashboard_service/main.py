@@ -8,24 +8,35 @@ from dash import dcc, html, Input, Output, State
 app = dash.Dash(__name__)
 app.title = "Recommendation Engine"
 
-app.layout = html.Div([
-    html.H1("Restaurants", style={"textAlign": "center"}),
-    html.Div([
-        dcc.Input(
-            id="search-box",
-            type="text",
-            placeholder="Enter search term",
-            style={"width": "50%", "padding": "10px"}
+app.layout = html.Div(
+    [
+        html.H1("Restaurants", style={"textAlign": "center"}),
+        html.Div(
+            [
+                dcc.Input(
+                    id="search-box",
+                    type="text",
+                    placeholder="Enter search term",
+                    style={"width": "50%", "padding": "10px"},
+                ),
+                html.Button(
+                    "Search",
+                    id="search-button",
+                    n_clicks=0,
+                    style={"marginLeft": "10px"},
+                ),
+            ],
+            style={"textAlign": "center", "margin": "20px"},
         ),
-        html.Button("Search", id="search-button", n_clicks=0, style={"marginLeft": "10px"}),
-    ], style={"textAlign": "center", "margin": "20px"}),
-    dcc.Graph(id="map-display"),
-])
+        dcc.Graph(id="map-display"),
+    ]
+)
+
 
 @app.callback(
     Output("map-display", "figure"),
     [Input("search-button", "n_clicks")],
-    [State("search-box", "value")]
+    [State("search-box", "value")],
 )
 def update_map(n_clicks, search_term):
     if not search_term:
@@ -36,7 +47,7 @@ def update_map(n_clicks, search_term):
             zoom=5,
             center={"lat": 39.0, "lon": 35.0},
             mapbox_style="open-street-map",
-            title="No Data"
+            title="No Data",
         )
 
     api_url = f"http://localhost:8001/search/search_text?search_text={search_term}&page_size=1000000"
@@ -47,9 +58,11 @@ def update_map(n_clicks, search_term):
     except requests.RequestException as e:
         print(f"Error fetching data: {e}")
         return px.scatter_mapbox(
-            lat=[], lon=[], zoom=1,
+            lat=[],
+            lon=[],
+            zoom=1,
             mapbox_style="open-street-map",
-            title="Error fetching data"
+            title="Error fetching data",
         )
 
     # Convert data to DataFrame
@@ -64,7 +77,7 @@ def update_map(n_clicks, search_term):
             zoom=5,
             center={"lat": 39.0, "lon": 35.0},
             mapbox_style="open-street-map",
-            title="No Results Found"
+            title="No Results Found",
         )
 
     # Generate map figure
@@ -77,13 +90,14 @@ def update_map(n_clicks, search_term):
             "restaurant_name": True,
             "restaurant_rate": True,
             "comment_avg_rating": True,
-            "score": True
+            "score": True,
         },
-        mapbox_style="open-street-map"
+        mapbox_style="open-street-map",
     )
     fig.update_layout(title=f"Restaurants {search_term}")
 
     return fig
+
 
 # Run the app
 if __name__ == "__main__":

@@ -20,5 +20,5 @@ class SearchService:
             search_text=search_dto.search_text,
             fuzzy_search_text=search_dto.generate_fuzzy_query_string(),
             lat=search_dto.lat,
-            lon=search_dto.lon
+            lon=search_dto.lon,
         )

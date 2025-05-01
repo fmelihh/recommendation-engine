@@ -10,6 +10,4 @@ search_router = APIRouter()
 async def search(search_dto: SearchDto = Depends()):
     service = SearchService()
     results = service.search(search_dto=search_dto)
-    return {
-        "results": results
-    }
+    return {"results": results}

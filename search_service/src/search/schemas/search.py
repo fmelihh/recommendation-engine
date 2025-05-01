@@ -26,4 +26,3 @@ class SearchDto(BaseModel):
                 word += f"~{int(tilde_num)}"
             search_words_with_tilde.append(word)
         return " ".join(search_words_with_tilde)
-
