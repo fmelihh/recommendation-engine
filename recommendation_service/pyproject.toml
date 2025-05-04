@@ -10,6 +10,9 @@ python = "^3.11"
 fastapi = "^0.115.12"
 pydantic = "^2.11.4"
 jupyter = "^1.1.1"
+pandas = "^2.2.3"
+scikit-learn = "^1.6.1"
+sentence-transformers = "^4.1.0"
 
 
 [build-system]
