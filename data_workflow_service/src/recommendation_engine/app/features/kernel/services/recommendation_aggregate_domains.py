@@ -1,3 +1,4 @@
+import pandas as pd
 from sqlalchemy.sql import literal
 from clickhouse_sqlalchemy import select
 from sqlalchemy import select, func, and_, null
@@ -63,8 +64,10 @@ class RecommendationAggregateDomainsService:
         )
 
         with get_session() as session:
-            result = session.execute(stmt).fetchall()
-        return result
+            result = pd.DataFrame(
+                session.execute(stmt).fetchall(), columns=[c.name for c in stmt.columns]
+            )
+        return result.to_dict(orient="records")
 
     @staticmethod
     def _build_comment_query(comment_alias):
