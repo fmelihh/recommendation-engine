@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 from sqlalchemy.sql import literal
 from clickhouse_sqlalchemy import select
@@ -67,6 +68,17 @@ class RecommendationAggregateDomainsService:
             result = pd.DataFrame(
                 session.execute(stmt).fetchall(), columns=[c.name for c in stmt.columns]
             )
+            result["restaurant_comments"] = result["restaurant_comments"].apply(
+                lambda x: (
+                    [json.loads(y.replace("\n", "")) for y in x] if len(x) > 0 else []
+                )
+            )
+            result["menu_items"] = result["menu_items"].apply(
+                lambda x: (
+                    [json.loads(y.replace("\n", "")) for y in x] if len(x) > 0 else []
+                )
+            )
+
         return result.to_dict(orient="records")
 
     @staticmethod
