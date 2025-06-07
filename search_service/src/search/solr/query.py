@@ -1,3 +1,5 @@
+from typing import Any
+
 from .base import AbstractSolr
 
 
@@ -57,3 +59,26 @@ class SolrQuery(AbstractSolr):
         )
 
         return list(result.docs)
+
+    def get_restaurants_with_id(
+        self, restaurant_ids: list[str]
+    ) -> list[dict[str, Any]]:
+        results = []
+        for restaurant_id in restaurant_ids:
+            result = self.solr_client.search(
+                "",
+                start=0,
+                rows=1,
+                defType="dismax",
+                fl="*, score",
+                sort="score desc",
+                **{
+                    "q.alt": f'restaurant_id:"{restaurant_id}"',
+                },
+            )
+            if len(result.docs) == 0:
+                continue
+
+            results.append(result.docs[0])
+
+        return results
