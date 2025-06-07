@@ -18,7 +18,8 @@ class SearchService:
             page=search_dto.page,
             page_size=search_dto.page_size,
             search_text=search_dto.search_text,
-            fuzzy_search_text=search_dto.generate_fuzzy_query_string(),
+            search_text_and=search_dto.generate_search_text_and(),
+            search_text_or=search_dto.generate_search_text_or(),
             lat=search_dto.lat,
             lon=search_dto.lon,
         )

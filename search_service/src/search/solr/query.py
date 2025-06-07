@@ -10,9 +10,8 @@ class SolrQuery(AbstractSolr):
         page: int,
         page_size: int,
         search_text: str,
-        fuzzy_search_text: str,
-        lat: str | None = None,
-        lon: str | None = None,
+        search_text_and: str,
+        search_text_or: str,
     ):
         query = """
             provider:{search_text}^2 OR
@@ -23,13 +22,21 @@ class SolrQuery(AbstractSolr):
             product_names:{search_text}^4.5
             product_description:{search_text}^3.5 OR
             
-            provider:{fuzzy_search_text}^1 OR
-            restaurant_name:{fuzzy_search_text}^5 OR
-            restaurant_city:{fuzzy_search_text}^1 OR
-            comments:{fuzzy_search_text}^1.7 OR
-            product_categories:{fuzzy_search_text}^1.7 OR
-            product_names:{fuzzy_search_text}^2.3
-            product_description:{fuzzy_search_text}^1.7
+            provider:{search_text_and}^2 OR
+            restaurant_name:{search_text_and}^10 OR
+            restaurant_city:{search_text_and}^2 OR
+            comments:{search_text_and}^3.5 OR
+            product_categories:{search_text_and}^3.5 OR
+            product_names:{search_text_and}^4.5
+            product_description:{search_text_and}^3.5 OR
+            
+            provider:{search_text_or}^0.5 OR
+            restaurant_name:{search_text_or}^3.5 OR
+            restaurant_city:{search_text_or}^0.5 OR
+            comments:{search_text_or}^0.3 OR
+            product_categories:{search_text_or}^0.3 OR
+            product_names:{search_text_or}^0.3
+            product_description:{search_text_or}^0.3 OR
         """
         start = page * page_size
         result = self.solr_client.search(
@@ -43,7 +50,8 @@ class SolrQuery(AbstractSolr):
             **{
                 "q.alt": query.format(
                     search_text=search_text,
-                    fuzzy_search_text=fuzzy_search_text,
+                    search_text_and=search_text_and,
+                    search_text_or=search_text_or,
                 ),
             },
         )

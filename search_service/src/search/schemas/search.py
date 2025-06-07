@@ -8,6 +8,16 @@ class SearchDto(BaseModel):
     lat: str | None = Field(default=None)
     lon: str | None = Field(default=None)
 
+    def generate_search_text_and(self):
+        search_text_and = self.search_text
+        search_text_and = " AND ".join(search_text_and.split(" "))
+        return search_text_and
+
+    def generate_search_text_or(self):
+        search_text_or = self.search_text
+        search_text_or = " OR ".join(search_text_or.split(" "))
+        return search_text_or
+
     def generate_fuzzy_query_string(self, search_text: str | None = None) -> str:
         if search_text is None:
             search_text = self.search_text

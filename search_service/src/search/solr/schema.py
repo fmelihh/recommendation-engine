@@ -11,7 +11,7 @@ class SolrSchema(AbstractSolr, AbstractExecutor):
 
     def execute(self):
         payload = dict()
-        payload.update(self.fuzzy_search_field_type())
+        payload.update(self.exact_search_field_type())
         payload.update(self.search_fields())
 
         self.synchronized_call(
@@ -27,23 +27,41 @@ class SolrSchema(AbstractSolr, AbstractExecutor):
         print("schema creation successfully completed.")
 
     @staticmethod
-    def fuzzy_search_field_type() -> dict[str, Any]:
+    def exact_search_field_type() -> dict[str, Any]:
         return {
             "add-field-type": [
                 {
-                    "name": "fuzzyFieldType",
+                    "name": "exactFieldType",
                     "class": "solr.TextField",
                     "analyzer": {
                         "tokenizer": {"name": "whitespace"},
                         "filters": [
                             {"name": "lowercase"},
                             {"name": "classic"},
-                            {"name": "nGram", "minGramSize": "3", "maxGramSize": "5"},
                         ],
                     },
                 }
             ]
         }
+
+    # @staticmethod
+    # def fuzzy_search_field_type() -> dict[str, Any]:
+    #     return {
+    #         "add-field-type": [
+    #             {
+    #                 "name": "fuzzyFieldType",
+    #                 "class": "solr.TextField",
+    #                 "analyzer": {
+    #                     "tokenizer": {"name": "whitespace"},
+    #                     "filters": [
+    #                         {"name": "lowercase"},
+    #                         {"name": "classic"},
+    #                         {"name": "nGram", "minGramSize": "3", "maxGramSize": "5"},
+    #                     ],
+    #                 },
+    #             }
+    #         ]
+    #     }
 
     @staticmethod
     def search_fields() -> dict[str, Any]:
@@ -55,7 +73,7 @@ class SolrSchema(AbstractSolr, AbstractExecutor):
         ]
 
         str_fields = ["restaurant_id", "lat", "lon"]
-        fuzzy_fields = [
+        exact_fields = [
             "provider",
             "restaurant_name",
             "restaurant_city",
@@ -76,22 +94,18 @@ class SolrSchema(AbstractSolr, AbstractExecutor):
             payload_declarations.append(
                 {"name": float_field, "type": "plongs", "multiValued": False}
             )
-        for fuzzy_field in fuzzy_fields:
-            if fuzzy_field not in multivalued_fields:
+        for exact_field in exact_fields:
+            if exact_field not in multivalued_fields:
                 payload_declarations.append(
                     {
-                        "name": fuzzy_field,
-                        "type": "fuzzyFieldType",
+                        "name": exact_field,
+                        "type": "exactFieldType",
                         "multiValued": False,
                     }
                 )
             else:
                 payload_declarations.append(
-                    {"name": fuzzy_field, "type": "fuzzyFieldType", "multiValued": True}
+                    {"name": exact_field, "type": "fuzzyFieldType", "multiValued": True}
                 )
 
         return {"add-field": payload_declarations}
-
-    # @staticmethod
-    # def all_in_one_field() -> dict[str, Any]:
-    #     pass
