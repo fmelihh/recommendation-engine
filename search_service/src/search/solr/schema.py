@@ -105,7 +105,7 @@ class SolrSchema(AbstractSolr, AbstractExecutor):
                 )
             else:
                 payload_declarations.append(
-                    {"name": exact_field, "type": "fuzzyFieldType", "multiValued": True}
+                    {"name": exact_field, "type": "exactFieldType", "multiValued": True}
                 )
 
         return {"add-field": payload_declarations}

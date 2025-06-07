@@ -5,8 +5,8 @@ class SearchDto(BaseModel):
     page: int = Field(default=0)
     page_size: int = Field(default=10)
     search_text: str
-    lat: str | None = Field(default=None)
-    lon: str | None = Field(default=None)
+    # lat: str | None = Field(default=None)
+    # lon: str | None = Field(default=None)
 
     def generate_search_text_and(self):
         search_text_and = self.search_text

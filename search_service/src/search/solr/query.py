@@ -36,7 +36,7 @@ class SolrQuery(AbstractSolr):
             comments:{search_text_or}^0.3 OR
             product_categories:{search_text_or}^0.3 OR
             product_names:{search_text_or}^0.3
-            product_description:{search_text_or}^0.3 OR
+            product_description:{search_text_or}^0.3
         """
         start = page * page_size
         result = self.solr_client.search(

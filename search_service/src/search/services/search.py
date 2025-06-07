@@ -21,6 +21,4 @@ class SearchService:
             search_text=search_dto.search_text,
             search_text_and=search_dto.generate_search_text_and(),
             search_text_or=search_dto.generate_search_text_or(),
-            lat=search_dto.lat,
-            lon=search_dto.lon,
         )
