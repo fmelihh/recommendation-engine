@@ -1,4 +1,5 @@
 from typing import Any
+
 from ..solr.query import SolrQuery
 from ..schemas.search import SearchDto
 
