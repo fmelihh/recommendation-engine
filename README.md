@@ -5,5 +5,5 @@
 
 <br>
 
-## Application  
-![Alt text](images/screenshot.png)
+## Application UI
+![Alt text](images/recom-engine-ui.png)
